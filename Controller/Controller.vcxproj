@@ -11,9 +11,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{CE8F7115-3597-456D-9CB3-7B67E6F736E0}</ProjectGuid>
+    <ProjectGuid>{494AF8C2-51E7-40E4-8976-464A4A38380A}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>THO7LicenseRecognition</RootNamespace>
+    <RootNamespace>Controller</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
