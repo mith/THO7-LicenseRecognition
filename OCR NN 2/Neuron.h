@@ -2,19 +2,14 @@
 
 #include <vector>
 
-struct NeuronConnection {
-	float weight;
-	float delta_weight;
-};
+typedef std::vector<float> neuron_weights;
 
-class Neuron
-{
-public:
-	Neuron(unsigned int num_connections);
-	~Neuron();
+struct Neuron {
+	float & outputvalue;
+	neuron_weights & weights;
+	neuron_weights & delta_weights;
 
-private:
-	float output;
-	std::vector<NeuronConnection> connections;
+	Neuron(float & ov, neuron_weights & ws, neuron_weights & dws)
+		: outputvalue(ov), weights(ws), delta_weights(dws) {}
 };
 
