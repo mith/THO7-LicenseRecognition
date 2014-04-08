@@ -9,7 +9,7 @@ class NeuralNetwork
 public:
 	NeuralNetwork(const std::vector<unsigned int> topology);
 	~NeuralNetwork();
-	//void feedForward(const std::vector<float> &input);
+	void feedForward(const std::vector<float> &input);
 	//void backPropagate(const std::vector<float> &target);
 	//std::vector<float> getOutput() const;
 

@@ -21,9 +21,35 @@ NeuralNetwork::NeuralNetwork(const std::vector<unsigned int> topology)
 }
 
 
+
+
 NeuralNetwork::~NeuralNetwork()
 {
 }
+
+void NeuralNetwork::feedForward(const vector<float> &input) {
+	// Set input values of input neurons
+	for (unsigned int i = 0; (i < input.size()) && (i < layers[0].outputvalues.size()); ++i) {
+		layers[0].outputvalues[i] = input[i];
+	}
+
+	// loop through layers after input layer
+	for (unsigned int current_layer = 1; current_layer < layers.size(); ++current_layer) {
+		// loop through every neuron of current layer except bias neuron
+		for (unsigned int current_neuron = 0; current_neuron < layers[current_layer].outputvalues.size() - 1; ++current_neuron) {
+			// Sum all the connections to this neuron from the previous layer
+			float sum = 0.0;
+			NeuronLayer &previous_layer = layers[current_layer - 1];
+			// Loop through all connections from the previous layer to this neuron	
+			for (unsigned int input_neuron = 0; input_neuron < previous_layer.outputvalues.size(); ++input_neuron) {
+				sum += previous_layer.outputvalues[input_neuron] * previous_layer.weights[input_neuron][current_neuron];
+			}
+			layers[current_layer].outputvalues[current_neuron] = tanh(sum);
+		}
+	}
+	//
+}
+
 
 int main() {
 	return 0;
