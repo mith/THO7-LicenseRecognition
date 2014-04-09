@@ -64,79 +64,53 @@ void NeuralNetwork::feedForward(const vector<float> &input) {
 #endif
 }
 
+
 void NeuralNetwork::feedForward_SSE(const vector<float> & input)
 {
-	using namespace concurrency;
+	if (layers[0].outputvalues.size() != input.size()) {
+		throw new std::runtime_error("Invalid input values");
+	}
 
-	for (unsigned int layer_i = 0; layer_i < num_layers() - 1; layer_i++) {
-		const NeuronLayer & layer = layers[layer_i];
-		NeuronLayer & next_layer = layers[layer_i + 1];
+	layers[0].outputvalues = input;
 
-		array<const float, 1> cur_layer_values(layer.num_nodes(), layer.outputvalues);
-		//array_view<const float, 2> cur_layer_weight(layer.num_nodes() * next_layer.num_nodes(), layer.weights);
-		array<float, 1> next_layer_values(next_layer.num_nodes(), next_layer.outputvalues);
+	for (unsigned int l_id = 0; l_id < num_layers() - 1; l_id++) {
+		const NeuronLayer & layer = layers[l_id];
 
-		int num_nodes = layer.num_nodes();
+		NeuronLayer & next_layer = layers[l_id + 1];
 
-		parallel_for_each(next_layer_values.extent, [=](index<1> ind) restrict(amp) {
-			float sum = 0.0;
+		for (int n_id = 0; n_id < layer.num_nodes(); n_id++) {
+			const __m256 outputvalue = _mm256_broadcast_ss(&layer.outputvalues[n_id]);
 
-			for (int ni = 0; ni < num_nodes; ni++) {
-				sum += cur_layer_values[index<1>(ni)];// * cur_layer_weight[index<2>(ind[0], ni)];
+			const int md_iter = next_layer.num_nodes() / 8;
+
+			const float * node_weights_ptr = layer.weights[n_id].data();
+			float * layer_output_ptr = next_layer.outputvalues.data();
+
+			for (int iter = 0; iter < md_iter; iter++) {
+				const __m256 ws = _mm256_loadu_ps((const float *)(node_weights_ptr));
+
+				_mm256_storeu_ps(layer_output_ptr, _mm256_mul_ps(outputvalue, ws));
+
+				node_weights_ptr += 8;
+				layer_output_ptr += 8;
 			}
 
-			next_layer_values[ind] = precise_math::tanh(sum);
-		});
-	}
-	
-}
+			const int rest = next_layer.num_nodes() % 8;
 
-//void NeuralNetwork::feedForward_SSE(const vector<float, aligned_allocator<__m256, 32>> & input)
-//{
-//	if (layers[0].outputvalues.size() != input.size()) {
-//		throw new std::runtime_error("Invalid input values");
-//	}
-//
-//	layers[0].outputvalues = input;
-//
-//	for (unsigned int l_id = 0; l_id < num_layers() - 1; l_id++) {
-//		const NeuronLayer & layer = layers[l_id];
-//
-//		NeuronLayer & next_layer = layers[l_id + 1];
-//
-//		for (int n_id = 0; n_id < layer.num_nodes(); n_id++) {
-//			const __m256 outputvalue = _mm256_broadcast_ss(&layer.outputvalues[n_id]);
-//
-//			const int md_iter = next_layer.num_nodes() / 8;
-//
-//			const float * node_weights_ptr = layer.weights[n_id].data();
-//			float * layer_output_ptr = next_layer.outputvalues.data();
-//
-//			for (int iter = 0; iter < md_iter; iter++) {
-//				const __m256 ws = _mm256_load_ps((const float *)(node_weights_ptr));
-//
-//				_mm256_store_ps(layer_output_ptr, _mm256_mul_ps(outputvalue, ws));
-//
-//				node_weights_ptr += 8;
-//				layer_output_ptr += 8;
-//			}
-//
-//			const int rest = next_layer.num_nodes() % 8;
-//
-//			for (int riter = 0; riter < rest; riter++) {
-//				*layer_output_ptr = layer.outputvalues[n_id] * (*node_weights_ptr);
-//
-//				node_weights_ptr++;
-//				layer_output_ptr++;
-//			}
-//
-//			for (auto & v : next_layer.outputvalues) {
-//				v = tanh(v);
-//			}
-//		}
-//
-//	}
-//}
+			for (int riter = 0; riter < rest; riter++) {
+				*layer_output_ptr = layer.outputvalues[n_id] * (*node_weights_ptr);
+
+				node_weights_ptr++;
+				layer_output_ptr++;
+			}
+
+			for (auto & v : next_layer.outputvalues) {
+				v = tanh(v);
+			}
+		}
+
+	}
+}
 
 
 int main() {
@@ -147,9 +121,11 @@ int main() {
 
 	BaseTimer tmr;
 	tmr.start();
-	net.feedForward(input);
+	for (int i = 0; i < 100000; i++) {
+		net.feedForward(input);
+	}
 	tmr.stop();
 
-	std::cout << "feedforward took: " << tmr.elapsedMicroSeconds() << std::endl;
+	std::cout << "feedforward took: " << tmr.elapsedSeconds() << std::endl;
 	return 0;
 }
