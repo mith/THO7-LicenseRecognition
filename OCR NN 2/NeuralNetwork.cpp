@@ -76,7 +76,7 @@ void NeuralNetwork::feedForward_AMP(const vector<float> & input)
 
 	array_view<const float, 1> input_view(input.size(), input);
 
-	input_view.copy_to(layers[0].values);
+	//input_view.copy_to(layers[0].values);
 
 	for (int layer_i = 0; layer_i < num_layers() - 1; layer_i++) {
 		const NeuronLayer & layer = layers[layer_i];
