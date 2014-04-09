@@ -1,22 +1,13 @@
 #include "NeuralNetwork.h"
+#include "basetimer.h"
 
 using namespace std;
 
 NeuralNetwork::NeuralNetwork(const std::vector<unsigned int> topology)
 {
 	// Every element in the topology vector represents a layer, the value of each element is the amount of neurons in that layer
-	for (vector<unsigned int>::const_iterator it_layersize = topology.begin(); it_layersize != topology.end(); ++it_layersize) {
-		// Since this is a fully connected neural network, every neuron needs a connection with all neurons in the next layer,
-		// except for the last (output) layer
-		unsigned int connections_per_neuron;
-		if (it_layersize != topology.end()) {
-			connections_per_neuron = *(++it_layersize);
-		}
-		else {
-			connections_per_neuron = 0;
-		}
-		// Create a new layer
-		layers.push_back(NeuronLayer((*it_layersize) + 1, connections_per_neuron)); // + 1 for the bias Neuron
+	for (const auto & lc : topology) {
+		layers.emplace_back(lc + 1, lc + 1);
 	}
 }
 
@@ -29,14 +20,17 @@ NeuralNetwork::~NeuralNetwork()
 
 void NeuralNetwork::feedForward(const vector<float> &input) {
 	// Set input values of input neurons
-	for (unsigned int i = 0; (i < input.size()) && (i < layers[0].outputvalues.size()); ++i) {
-		layers[0].outputvalues[i] = input[i];
+	if (input.size() != layers[0].num_nodes()) {
+		throw new std::runtime_error("Wrong size input vector");
 	}
 
+	layers[0].outputvalues = input;
+
 	// loop through layers after input layer
-	for (unsigned int current_layer = 1; current_layer < layers.size(); ++current_layer) {
+	for (unsigned int current_layer = 1; current_layer < num_layers(); ++current_layer) {
 		// loop through every neuron of current layer except bias neuron
-		for (unsigned int current_neuron = 0; current_neuron < layers[current_layer].outputvalues.size() - 1; ++current_neuron) {
+
+		for (unsigned int current_neuron = 0; current_neuron < layers[current_layer].num_nodes() - 1; ++current_neuron) {
 			// Sum all the connections to this neuron from the previous layer
 			float sum = 0.0;
 			NeuronLayer &previous_layer = layers[current_layer - 1];
@@ -52,10 +46,21 @@ void NeuralNetwork::feedForward(const vector<float> &input) {
 
 
 int main() {
-	//ImageLib::ImageGray img("hoi.png");
+	std::vector<unsigned int> topology(3, 50);
+
+	NeuralNetwork net(topology);
+	std::vector<float> input(50, 1.0);
+
+	BaseTimer tmr;
+	tmr.start();
+	for (int i = 0; i < 1000000; i++) {
+		net.feedForward(input);
+	}
+	tmr.stop();
+
+	std::cout << "feedforward took: " << tmr.elapsedSeconds() << std::endl;
+	return 0;
 
 
-	std::cout << "Done!" << std::endl;
-	std::cin.ignore();
 	return 0;
 }

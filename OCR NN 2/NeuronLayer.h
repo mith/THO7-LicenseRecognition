@@ -3,7 +3,7 @@
 #include <vector>
 
 
-class NeuronLayer
+struct NeuronLayer
 {
 friend class NeuralNetwork;
  
@@ -14,6 +14,7 @@ public:
 
 	std::vector<std::vector<float>> weights;
 	std::vector<std::vector<float>> delta_weights;
-private:
+
+	int num_nodes() const { return outputvalues.size(); }
 };
 
