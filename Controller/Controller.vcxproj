@@ -44,7 +44,7 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros">
-    <NuGetPackageImportStamp>c1546f06</NuGetPackageImportStamp>
+    <NuGetPackageImportStamp>65e3b65c</NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -76,6 +76,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
+      <AdditionalOptions> /Qvec-report:2</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -86,15 +87,18 @@
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
-    <Import Project="..\packages\imagelib.0.5\build\native\imagelib.targets" Condition="Exists('..\packages\imagelib.0.5\build\native\imagelib.targets')" />
+    <Import Project="..\packages\imagelib.0.7\build\native\imagelib.targets" Condition="Exists('..\packages\imagelib.0.7\build\native\imagelib.targets')" />
     <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
     <Import Project="..\packages\imagelib.0.7\build\native\imagelib.targets" Condition="Exists('..\packages\imagelib.0.7\build\native\imagelib.targets')" />
+    <Import Project="..\packages\libtimer.0.1\build\native\libtimer.targets" Condition="Exists('..\packages\libtimer.0.1\build\native\libtimer.targets')" />
   </ImportGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\imagelib.0.5\build\native\imagelib.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\imagelib.0.5\build\native\imagelib.targets'))" />
+    <Error Condition="!Exists('..\packages\imagelib.0.7\build\native\imagelib.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\imagelib.0.7\build\native\imagelib.targets'))" />
     <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+    <Error Condition="!Exists('..\packages\imagelib.0.7\build\native\imagelib.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\imagelib.0.7\build\native\imagelib.targets'))" />
+    <Error Condition="!Exists('..\packages\libtimer.0.1\build\native\libtimer.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\libtimer.0.1\build\native\libtimer.targets'))" />
   </Target>
 </Project>
