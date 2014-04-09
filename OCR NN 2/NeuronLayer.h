@@ -1,24 +1,23 @@
 #pragma once
 #include <vector>
+#include <amp.h>
 
-
-class NeuronLayer
+struct NeuronLayer
 {
-friend class NeuralNetwork;
- 
-public:
-	NeuronLayer(unsigned int size, unsigned int connections_per_neuron);
+	NeuronLayer(int size, int connections_per_neuron);
 	~NeuronLayer();
 
 	int num_nodes() const
 	{
-		return outputvalues.size();
+		return values.extent.size();
 	}
 
-	std::vector<float> outputvalues;
+	concurrency::array<float, 1> values;
+	concurrency::array<float, 2> weights;
+	concurrency::array<float, 2> delta_weights;
+	/*std::vector<float> outputvalues;
 
 	std::vector<std::vector<float>> weights;
-	std::vector<std::vector<float>> delta_weights;
-private:
+	std::vector<std::vector<float>> delta_weights;*/
 };
 

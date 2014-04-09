@@ -23,9 +23,5 @@ public:
 private:
 	std::vector<NeuronLayer> layers;
 
-	void feedForward_SSE(const std::vector<float> & input);
+	void feedForward_AMP(const std::vector<float> & input);
 };
-
-extern __m256 __cdecl _mm256_tanh_ps(__m256);
-
-//extern __cdecl __m256 _mm256_tanh_ps(__m256 a);

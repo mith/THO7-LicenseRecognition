@@ -2,12 +2,16 @@
 
 using namespace std;
 
-NeuronLayer::NeuronLayer(unsigned int size, unsigned int connections_per_neuron)
+NeuronLayer::NeuronLayer(int size, int connections_per_neuron)
+: values(size), weights(size, connections_per_neuron), delta_weights(size, connections_per_neuron)
 {
-	for (unsigned int i = 0; i < size; ++i) {
-		weights.push_back(vector<float>(connections_per_neuron, rand() / float(RAND_MAX))); //Random weight of range - 1 to 1
-		delta_weights.push_back(vector<float>(connections_per_neuron, 0));
-		outputvalues.push_back(0);
+	for (int n = 0; n < size; n++) {
+		values[concurrency::index<1>(n)] = 0;
+		for (int w = 0; w < connections_per_neuron; w++) {
+			concurrency::index<2> idx(n, w);
+			weights[idx] = rand() / float(RAND_MAX);
+			delta_weights[idx] = 0;
+		}
 	}
 }
 
