@@ -1,5 +1,6 @@
 #pragma once
-
+#include <iostream>
+#include "ImageLib.h"
 #include "NeuronLayer.h"
 
 #include <vector>

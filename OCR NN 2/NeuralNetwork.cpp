@@ -52,5 +52,10 @@ void NeuralNetwork::feedForward(const vector<float> &input) {
 
 
 int main() {
+	//ImageLib::ImageGray img("hoi.png");
+
+
+	std::cout << "Done!" << std::endl;
+	std::cin.ignore();
 	return 0;
 }

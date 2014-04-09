@@ -135,6 +135,7 @@
   <ImportGroup Label="ExtensionTargets">
     <Import Project="..\packages\imagelib.0.5\build\native\imagelib.targets" Condition="Exists('..\packages\imagelib.0.5\build\native\imagelib.targets')" />
     <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+    <Import Project="..\packages\imagelib.0.7\build\native\imagelib.targets" Condition="Exists('..\packages\imagelib.0.7\build\native\imagelib.targets')" />
   </ImportGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
