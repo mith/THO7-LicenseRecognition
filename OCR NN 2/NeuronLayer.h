@@ -1,5 +1,4 @@
 #pragma once
-
 #include <vector>
 
 
@@ -10,6 +9,12 @@ friend class NeuralNetwork;
 public:
 	NeuronLayer(unsigned int size, unsigned int connections_per_neuron);
 	~NeuronLayer();
+
+	int num_nodes() const
+	{
+		return outputvalues.size();
+	}
+
 	std::vector<float> outputvalues;
 
 	std::vector<std::vector<float>> weights;
