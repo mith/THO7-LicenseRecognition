@@ -25,8 +25,8 @@ NeuralNetwork::NeuralNetwork(const std::vector<unsigned int> & topology)
 
 	for (const auto & lc : topology) {
 		layers.emplace_back(lc, lc);
+		}
 	}
-}
 
 
 

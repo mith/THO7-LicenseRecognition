@@ -21,6 +21,9 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{494AF8C2-51E7-40E4-8976-464A4A38380A}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
