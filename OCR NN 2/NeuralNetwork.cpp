@@ -107,7 +107,7 @@ void NeuralNetwork::feedForward(const vector<float> &input) {
 // Author: Harmen Klink
 void NeuralNetwork::backPropagate(const std::vector<float> &target) {
 	NeuronLayer &output_layer = layers.back();
-	for (unsigned int neuron = 0; neuron < output_layer.output_values.size() - 1; ++neuron) {
+	for (unsigned int neuron = 0; neuron < output_layer.num_nodes() - 1; ++neuron) {
 		float neuron_error = target[neuron] - output_layer.output_values[neuron]; // Calculate neuron error
 		//Calculate gradient for this output neuron by multiplying the neuron error with the derivative of the outputvalue of tanh
 		output_layer.gradients[neuron] = neuron_error * (1 - (tanh(output_layer.output_values[neuron]) * tanh(output_layer.output_values[neuron])));
@@ -115,20 +115,24 @@ void NeuralNetwork::backPropagate(const std::vector<float> &target) {
 
 	// Calculate hidden layer(s) neuron gradients
 	for (unsigned int layer = static_cast<unsigned int>(layers.size() - 2); layer != 0; --layer) {
-		for (unsigned int current_neuron = 0; current_neuron < layers[layer].output_values.size(); ++current_neuron) {
+		NeuronLayer & current_layer = layers[layer];
+		for (unsigned int current_neuron = 0; current_neuron < current_layer.num_nodes(); ++current_neuron) {
+			
 			float sum = 0.0; // Sum of this neuron's contribution to the errors of the next layer
 			for (unsigned int next_neuron = 0; next_neuron < layers[layer + 1].output_values.size() - 1; ++next_neuron) {
 				sum += layers[layer].weights[current_neuron][next_neuron] * layers[layer + 1].gradients[next_neuron];
 			}
-			layers[layer].gradients[current_neuron] = sum * (1 - (tanh(output_layer.output_values[current_neuron]) * tanh(output_layer.output_values[current_neuron])));
+			layers[layer].gradients[current_neuron] = sum * (1 - (tanh(current_layer.output_values[current_neuron]) * tanh(current_layer.output_values[current_neuron])));
 		}
 	}
 
 	// Update weights in all layers
 	for (unsigned int layer = static_cast<unsigned int>(layers.size() - 1); layer != 0; --layer) {
-		for (unsigned int current_neuron = 0; current_neuron < layers[layer].output_values.size() - 1; ++current_neuron) {
-			for (unsigned int input_neuron = 0; current_neuron < layers[layer - 1].output_values.size(); ++input_neuron) {
-				layers[layer - 1].weights[input_neuron][current_neuron] += TRAINING_RATE * layers[layer - 1].output_values[input_neuron] * layers[layer].gradients[current_neuron];
+		const NeuronLayer & current_layer = layers[layer];
+		NeuronLayer & previous_layer = layers[layer - 1];
+		for (unsigned int input_neuron = 0; input_neuron < previous_layer.num_nodes(); ++input_neuron) {
+			for (unsigned int current_neuron = 0; current_neuron < current_layer.num_nodes() - 1; ++current_neuron) {
+				previous_layer.weights[input_neuron][current_neuron] += TRAINING_RATE * previous_layer.output_values[input_neuron] * current_layer.gradients[current_neuron];
 			}
 		}
 	}

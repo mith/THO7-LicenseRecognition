@@ -19,27 +19,27 @@ OCRImageData::OCRImageData(const std::string & img_dir)
 OCRImageData::~OCRImageData() {
 }
 
-unsigned int OCRImageData::getNumberInput() 
+std::vector<unsigned int> OCRImageData::getTopology() 
 {
-	return 18;
+	return{ 18, 30, 6 };
 }
 
-unsigned OCRImageData::getImageList() {
+unsigned OCRImageData::loadImageList() {
 	imageList.clear();
 
 	std::vector<std::string> tempList;
-	int count = GetFileList("../../Images/*.jpg", tempList);
+	int count = GetFileList((imageDir + "\\*.jpg").c_str(), tempList);
 
 	// Using Index Based Accessing
 	for(int i = 0; i < tempList.size(); i++) {
-		imageList.push_back(ImageGray(("../../Images/" + tempList[i]).c_str()));
+		imageList.push_back(ImageGray((imageDir + "\\" + tempList[i]).c_str()));
 		imageData.push_back(getCharIndex(tempList[i][0]));
 	}
 
 	return imageList.size();
 }
 
-unsigned OCRImageData::getNextInputs(std::vector<double> &inputVals, unsigned currentImage) {
+unsigned OCRImageData::getNextInputs(std::vector<float> &inputVals, unsigned currentImage) {
 	inputVals.clear();
 
 	if(currentImage <= imageList.size()){ 
@@ -82,7 +82,7 @@ unsigned OCRImageData::getNextInputs(std::vector<double> &inputVals, unsigned cu
 	return inputVals.size();
 }
 
-unsigned OCRImageData::getTargetOutputs(std::vector<double> &targetOutputVals, unsigned currentImage) {
+unsigned OCRImageData::getTargetOutputs(std::vector<float> &targetOutputVals, unsigned currentImage) {
 	targetOutputVals.clear();
 
 	//Create binairy targets
@@ -287,7 +287,7 @@ int OCRImageData::getCharIndex(char character) {
 	}
 }
 
-std::string OCRImageData::getCharFromOutputs(std::vector<double> &outputVals) {
+std::string OCRImageData::getCharFromOutputs(const std::vector<float> &outputVals) {
 	std::string text = "";
 	unsigned imageNumber = 0;
 
@@ -320,7 +320,7 @@ std::string OCRImageData::getCharFromOutputs(std::vector<double> &outputVals) {
 	return text;
 }
 
-void OCRImageData::showVectorVals(std::string label, std::vector<double> &v) {
+void OCRImageData::showVectorVals(std::string label, const std::vector<float> &v) {
 	std::cout << label << " ";
 	for(unsigned i = 0; i < v.size(); ++i) {
 		std::cout << v[i] << " / ";
