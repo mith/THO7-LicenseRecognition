@@ -10,10 +10,10 @@ friend class NeuralNetwork;
 public:
 	NeuronLayer(unsigned int size, unsigned int connections_per_neuron);
 	~NeuronLayer();
-	std::vector<float> outputvalues;
 
+	std::vector<float> outputvalues;
+	std::vector<float> gradients;
 	std::vector<std::vector<float>> weights;
-	std::vector<std::vector<float>> delta_weights;
 private:
 };
 
