@@ -97,6 +97,5 @@ int main() {
 	tmr.stop();
 
 	std::cout << "feedforward took: " << tmr.elapsedSeconds() << std::endl;
-	std::cin.ignore();
 	return 0;
 }
