@@ -7,14 +7,12 @@ NeuronLayer::NeuronLayer(unsigned int size, unsigned int connections_per_neuron,
 {
 	for (unsigned int i = 0; i < size; ++i) {
 		weights.emplace_back(connections_per_neuron, rand() / float(RAND_MAX)); //Random weight of range - 1 to 1
-		delta_weights.emplace_back(connections_per_neuron, 0);
 		output_values.push_back(0);
 	}
 
 	if (biasnode) {
 		output_values.push_back(1);
 		weights.emplace_back(connections_per_neuron, rand() / float(RAND_MAX));
-		delta_weights.emplace_back(connections_per_neuron, 0);
 	}
 }
 

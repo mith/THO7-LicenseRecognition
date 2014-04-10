@@ -17,8 +17,6 @@ public:
 	std::vector<std::vector<float>> weights;
 
 private:
-	std::vector<std::vector<float>> delta_weights;
-
 	unsigned int num_nodes() const { return (unsigned int)output_values.size(); }
 	unsigned int num_mut_nodes() const { return (unsigned int)output_values.size() - (biasnode ? 1 : 0); }
 };
