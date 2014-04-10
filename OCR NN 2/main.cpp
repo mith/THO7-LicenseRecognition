@@ -2,10 +2,20 @@
 #include "NeuralNetwork.h"
 #include "basetimer.h"
 #include "ImageLib.h"
+#include "OCRImageData.h"
 
 
-int main() {
-	std::vector<unsigned int> topology({ 20, 30, 36 });
+int main(int argc, const char* argv[])
+{
+	std::string img_dir = argv[1];
+
+
+	OCRImageData trainingData(img_dir);
+
+
+	
+
+	std::vector<unsigned int> topology({ trainingData.getNumberInput(), 30, 36 });
 
 	NeuralNetwork net(topology);
 	std::vector<float> input(20, 0.88f);

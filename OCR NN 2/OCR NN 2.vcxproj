@@ -148,7 +148,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalOptions> /Qvec-report:2</AdditionalOptions>
+      <AdditionalOptions> /Qvec-report:1</AdditionalOptions>
       <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalUsingDirectories>%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
       <EnableEnhancedInstructionSet>AdvancedVectorExtensions</EnableEnhancedInstructionSet>
@@ -164,13 +164,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="CheckPatterns.h" />
+    <ClInclude Include="Extensions.h" />
     <ClInclude Include="NeuralNetwork.h" />
     <ClInclude Include="NeuronLayer.h" />
+    <ClInclude Include="OCRImageData.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CheckPatterns.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="NeuralNetwork.cpp" />
     <ClCompile Include="NeuronLayer.cpp" />
+    <ClCompile Include="OCRImageData.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
