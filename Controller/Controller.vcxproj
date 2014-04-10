@@ -37,7 +37,7 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
     <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
-    <Import Project="..\packages\imagelib.0.7\build\native\imagelib.targets" Condition="Exists('..\packages\imagelib.0.7\build\native\imagelib.targets')" />
+    <Import Project="..\packages\imagelib.0.8\build\native\imagelib.targets" Condition="Exists('..\packages\imagelib.0.8\build\native\imagelib.targets')" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
@@ -46,7 +46,7 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros">
-    <NuGetPackageImportStamp>5e0c6ebd</NuGetPackageImportStamp>
+    <NuGetPackageImportStamp>eb750242</NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -93,6 +93,6 @@
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
-    <Error Condition="!Exists('..\packages\imagelib.0.7\build\native\imagelib.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\imagelib.0.7\build\native\imagelib.targets'))" />
+    <Error Condition="!Exists('..\packages\imagelib.0.8\build\native\imagelib.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\imagelib.0.8\build\native\imagelib.targets'))" />
   </Target>
 </Project>

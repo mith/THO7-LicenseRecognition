@@ -68,7 +68,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
-    <NuGetPackageImportStamp>a6f045ec</NuGetPackageImportStamp>
+    <NuGetPackageImportStamp>2e4e22ee</NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ExecutablePath>$(ExecutablePath)</ExecutablePath>
@@ -152,6 +152,9 @@
       <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalUsingDirectories>%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
       <EnableEnhancedInstructionSet>AdvancedVectorExtensions</EnableEnhancedInstructionSet>
+      <FloatingPointModel>Fast</FloatingPointModel>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <EnableParallelCodeGeneration>true</EnableParallelCodeGeneration>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -177,7 +180,7 @@
   <ImportGroup Label="ExtensionTargets">
     <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
     <Import Project="..\packages\libtimer.0.1\build\native\libtimer.targets" Condition="Exists('..\packages\libtimer.0.1\build\native\libtimer.targets')" />
-    <Import Project="..\packages\imagelib.0.7\build\native\imagelib.targets" Condition="Exists('..\packages\imagelib.0.7\build\native\imagelib.targets')" />
+    <Import Project="..\packages\imagelib.0.8\build\native\imagelib.targets" Condition="Exists('..\packages\imagelib.0.8\build\native\imagelib.targets')" />
   </ImportGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
@@ -185,6 +188,6 @@
     </PropertyGroup>
     <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
     <Error Condition="!Exists('..\packages\libtimer.0.1\build\native\libtimer.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\libtimer.0.1\build\native\libtimer.targets'))" />
-    <Error Condition="!Exists('..\packages\imagelib.0.7\build\native\imagelib.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\imagelib.0.7\build\native\imagelib.targets'))" />
+    <Error Condition="!Exists('..\packages\imagelib.0.8\build\native\imagelib.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\imagelib.0.8\build\native\imagelib.targets'))" />
   </Target>
 </Project>
