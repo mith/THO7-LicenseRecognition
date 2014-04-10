@@ -3,6 +3,7 @@
 #include "basetimer.h"
 #include "ImageLib.h"
 #include "OCRImageData.h"
+#include "ImageList.h"
 #include <ctime>
 
 
@@ -10,7 +11,7 @@ int main(int argc, const char* argv[])
 {
 	std::string img_dir = argv[1];
 
-
+	ImageList img_list(img_dir);
 	OCRImageData trainingData(img_dir);
 
 

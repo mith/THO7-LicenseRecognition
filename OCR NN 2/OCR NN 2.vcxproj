@@ -166,12 +166,14 @@
   <ItemGroup>
     <ClInclude Include="CheckPatterns.h" />
     <ClInclude Include="Extensions.h" />
+    <ClInclude Include="ImageList.h" />
     <ClInclude Include="NeuralNetwork.h" />
     <ClInclude Include="NeuronLayer.h" />
     <ClInclude Include="OCRImageData.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CheckPatterns.cpp" />
+    <ClCompile Include="ImageList.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="NeuralNetwork.cpp" />
     <ClCompile Include="NeuronLayer.cpp" />
