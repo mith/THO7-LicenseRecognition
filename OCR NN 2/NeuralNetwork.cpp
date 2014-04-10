@@ -1,7 +1,5 @@
 #include "NeuralNetwork.h"
 #define TRAINING_RATE 0.2f
-#include "basetimer.h"
-#include <ppl.h>
 
 using namespace std;
 
@@ -83,19 +81,4 @@ vector<float>& NeuralNetwork::getOutput() {
 	return layers.back().output_values;
 }
 
-int main() {
-	std::vector<unsigned int> topology({ 20, 30, 36 });
 
-	NeuralNetwork net(topology);
-	std::vector<float> input(20, 0.88f);
-
-	BaseTimer tmr;
-	tmr.start();
-	for (int i = 0; i < 1000000; i++) {
-		net.feedForward(input);
-	}
-	tmr.stop();
-
-	std::cout << "feedforward took: " << tmr.elapsedSeconds() << std::endl;
-	return 0;
-}
