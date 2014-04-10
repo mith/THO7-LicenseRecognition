@@ -1,5 +1,6 @@
 #include "NeuralNetwork.h"
 #include "basetimer.h"
+#include <amp_math.h>
 
 using namespace std;
 
@@ -61,7 +62,8 @@ void NeuralNetwork::feedForward(const vector<float> &input) {
 			}
 
 			for (auto & v : next_layer.outputvalues) {
-				v = tanh(v);
+				v = concurrency::precise_math::tanh(v);
+				//v = tanh(v);
 			}
 		}
 	}
@@ -76,7 +78,7 @@ int main() {
 
 	BaseTimer tmr;
 	tmr.start();
-	for (int i = 0; i < 100000; i++) {
+	for (int i = 0; i < 50000; i++) {
 		net.feedForward(input);
 	}
 	tmr.stop();
