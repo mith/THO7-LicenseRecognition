@@ -8,16 +8,15 @@
 class OCRImageData {
 private:
 	std::vector<ImageGray> imageList;
-	std::vector<unsigned> imageData;
+	
 	CheckPatterns patterns;
-	float thresholdVal;
-	float targetHigh;
-	float targetLow;
 
 	const std::string imageDir;
 public:
 	OCRImageData(const std::string & img_dir);
 	~OCRImageData();
+
+	std::vector<unsigned char> imageData;
 
 	// Initalize OCR
 	std::vector<unsigned int> getTopology();
@@ -28,8 +27,6 @@ public:
 	unsigned getTargetOutputs(std::vector<float> &targetOutputVals, unsigned currentImage);
 
 	// Return the character that is outputed
-	std::string getChar(unsigned currentImage);
-	int OCRImageData::getCharIndex(char character);
 	std::string getCharFromOutputs(const std::vector<float> &outputVals);
 	
 	// Display the values of a vector

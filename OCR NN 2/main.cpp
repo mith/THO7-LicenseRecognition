@@ -9,59 +9,39 @@
 int main(int argc, const char* argv[])
 {
 	std::string img_dir = argv[1];
-
-
 	OCRImageData trainingData(img_dir);
-
-
-	
-
 	std::vector<unsigned int> topology = trainingData.getTopology();
-
-	NeuralNetwork net(topology);
-	
-
-	BaseTimer tmr;
-	tmr.start();
-
-
-	int num_images = trainingData.loadImageList();
-
-	std::vector<float> input(topology.front(), 0.88f);
+	std::vector<float> input(topology.front());
 	std::vector<float> output(topology.back());
 	std::vector<float> targets(topology.back());
-
+	int num_images = trainingData.loadImageList();
 	srand(std::time(0));
 
-	for (int pass = 0; pass < 1 * 1000* 1000; pass++) {
+	//NeuralNetwork net(topology);
+	NeuralNetwork net("./Export/OCR.txt");
+
+	/*for (int pass = 0; pass < 1 * 1000 * 1000; pass++) {
 		int cur_img = (rand() * (int)(num_images - 1) / RAND_MAX);
 		trainingData.getNextInputs(input, cur_img);
 		trainingData.getTargetOutputs(targets, cur_img);
 		net.feedForward(input);
 		net.backPropagate(targets);
-	}
-	tmr.stop();
-
-	std::cout << "training took: " << tmr.elapsedSeconds() << std::endl;
-	tmr.reset();
-
-	for (int pass = 0; pass < 10; pass++) {
-		std::cout << "pass: " << pass << std::endl;
+	}*/
+	unsigned int success = 0;
+	//net.exportNetwork("./Export/OCR.txt");
+	for (int pass = 0; pass < 1000; pass++) {
 		int cur_img = (rand() * (int)(num_images - 1) / RAND_MAX);
-		trainingData.getNextInputs(input, cur_img);
-		trainingData.showVectorVals("Input:", input); std::cout << std::endl;
-
 		trainingData.getTargetOutputs(targets, cur_img);
-		trainingData.showVectorVals("Target output:", targets); std::cout << std::endl;
-		std::cout << "Target char:" << trainingData.getChar(cur_img) << std::endl;
-
+		trainingData.getNextInputs(input, cur_img);
 		net.feedForward(input);
 		output = net.getOutput();
-		trainingData.showVectorVals("Output:", output); std::cout << std::endl;
-		std::cout << "Output char" << trainingData.getCharFromOutputs(output) << std::endl;
-		net.backPropagate(targets);
+		std::cout << "Target char: " << trainingData.imageData[cur_img] << std::endl;
+		std::cout << "Output char: " << trainingData.getCharFromOutputs(output) << std::endl << std::endl;
+		if (trainingData.getCharFromOutputs(output)[0] == trainingData.imageData[cur_img]) {
+			success++;
+		}
 	}
-
+	std::cout << "Times success out of 1000 passes: " << success;
 	std::cin.ignore();
 	return 0;
 }
