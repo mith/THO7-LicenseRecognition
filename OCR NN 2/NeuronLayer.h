@@ -8,7 +8,7 @@ struct NeuronLayer
 friend class NeuralNetwork;
  
 public:
-	NeuronLayer(unsigned int size);
+	NeuronLayer(unsigned int size, unsigned int connections_per_neuron);
 	~NeuronLayer();
 	
 	std::vector<float> outputvalues;

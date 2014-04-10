@@ -11,12 +11,6 @@ NeuralNetwork::NeuralNetwork(const std::vector<unsigned int> topology)
 	}
 }
 
-void NeuralNetwork::feedForward(const std::vector<float> & input)
-{
-	for (int i = 0; i < layers.size(); i++) {
-
-	}
-}
 
 std::vector<float> NeuralNetwork::getOutput() const
 {
@@ -24,37 +18,53 @@ std::vector<float> NeuralNetwork::getOutput() const
 }
 
 
-
-
 NeuralNetwork::~NeuralNetwork()
 {
 }
 
 void NeuralNetwork::feedForward(const vector<float> &input) {
-	// Set input values of input neurons
-	if (input.size() != layers[0].num_nodes()) {
-		throw new std::runtime_error("Wrong size input vector");
+	if (layers[0].outputvalues.size() != input.size()) {
+		throw new std::runtime_error("Invalid input values");
 	}
 
 	layers[0].outputvalues = input;
 
-	// loop through layers after input layer
-	for (unsigned int layer_i = 1; layer_i < num_layers(); ++layer_i) {
-		// loop through every neuron of current layer except bias neuron
-		NeuronLayer & current_layer = layers[layer_i];
+	for (unsigned int l_id = 0; l_id < num_layers() - 1; l_id++) {
+		const NeuronLayer & layer = layers[l_id];
 
-		for (unsigned int current_neuron = 0; current_neuron < current_layer.num_nodes() - 1; ++current_neuron) {
-			// Sum all the connections to this neuron from the previous layer
-			float sum = 0.0;
-			NeuronLayer & previous_layer = layers[layer_i - 1];
-			// Loop through all connections from the previous layer to this neuron	
-			for (unsigned int input_neuron = 0; input_neuron < previous_layer.num_nodes(); ++input_neuron) {
-				sum += previous_layer.outputvalues[input_neuron] * previous_layer.weights[input_neuron][current_neuron];
+		NeuronLayer & next_layer = layers[l_id + 1];
+
+		for (int n_id = 0; n_id < layer.num_nodes(); n_id++) {
+			const __m256 outputvalue = _mm256_broadcast_ss(&layer.outputvalues[n_id]);
+
+			const int md_iter = next_layer.num_nodes() / 8;
+
+			const float * node_weights_ptr = layer.weights[n_id].data();
+			float * layer_output_ptr = next_layer.outputvalues.data();
+
+			for (int iter = 0; iter < md_iter; iter++) {
+				const __m256 ws = _mm256_loadu_ps((const float *)(node_weights_ptr));
+
+				_mm256_storeu_ps(layer_output_ptr, _mm256_mul_ps(outputvalue, ws));
+
+				node_weights_ptr += 8;
+				layer_output_ptr += 8;
 			}
-			current_layer.outputvalues[current_neuron] = tanh(sum);
+
+			const int rest = next_layer.num_nodes() % 8;
+
+			for (int riter = 0; riter < rest; riter++) {
+				*layer_output_ptr = layer.outputvalues[n_id] * (*node_weights_ptr);
+
+				node_weights_ptr++;
+				layer_output_ptr++;
+			}
+
+			for (auto & v : next_layer.outputvalues) {
+				v = tanh(v);
+			}
 		}
 	}
-	//
 }
 
 
@@ -66,7 +76,7 @@ int main() {
 
 	BaseTimer tmr;
 	tmr.start();
-	for (int i = 0; i < 1000000; i++) {
+	for (int i = 0; i < 100000; i++) {
 		net.feedForward(input);
 	}
 	tmr.stop();
