@@ -1,16 +1,70 @@
 #include "NeuralNetwork.h"
+#include <fstream>
+#include <sstream>
 #define TRAINING_RATE 0.2f
+
 
 using namespace std;
 
+// Author: Harmen Klink
+// Co-author: Simon Voordouw
 NeuralNetwork::NeuralNetwork(const std::vector<unsigned int> topology)
 {
 	// Every element in the topology vector represents a layer, the value of each element is the amount of neurons in that layer
 	for (unsigned int layer = 0; layer < topology.size() - 1; layer++) {
 		layers.emplace_back(topology[layer], topology[layer + 1], true);
 	}
-
 	layers.emplace_back(topology.back(), 0);
+}
+// Author: Kevin Bosman
+// Co-author: Harmen Klink
+NeuralNetwork::NeuralNetwork(const std::string &importFile) {
+	std::ifstream importDataFile;
+	importDataFile.open(importFile.c_str());
+	std::string line;
+	std::string label;
+
+	// Read topology
+	std::vector<unsigned> topology;
+
+	getline(importDataFile, line);
+	std::stringstream ss(line);
+	ss >> label;
+	if (importDataFile.eof() || label.compare("topology:") != 0) {
+		abort();
+	}
+
+	while (!ss.eof()) {
+		unsigned n;
+		ss >> n;
+		topology.push_back(n);
+	}
+
+	// Create Net
+	// Every element in the topology vector represents a layer, the value of each element is the amount of neurons in that layer
+	for (unsigned int layer = 0; layer < static_cast<unsigned int>(topology.size() - 1); layer++) {
+		layers.emplace_back(topology[layer], topology[layer + 1], true);
+	}
+	layers.emplace_back(topology.back(), 0);
+
+	// Set weights
+	while (getline(importDataFile, line)) {
+		// Read line
+		//std::cout << line << std::endl;
+		std::stringstream ss(line);
+
+		// Read layer and neuron number
+		unsigned layerNumber, neuronNumber;
+		ss >> label;
+		ss >> layerNumber;
+		ss >> label;
+		ss >> neuronNumber;
+		// Assign weights
+		float weight;
+		for (unsigned int weight_i = 0; ss >> weight; ++weight_i){
+			layers[layerNumber].weights[neuronNumber][weight_i] = weight;
+		}
+	}
 }
 
 
@@ -20,6 +74,8 @@ NeuralNetwork::~NeuralNetwork()
 {
 }
 
+// Author: Harmen Klink
+// Co-author: Simon Voordouw
 void NeuralNetwork::feedForward(const vector<float> &input) {
 	// Set input values of input neurons
 	if (input.size() != layers[0].num_nodes() - 1) {
@@ -48,6 +104,7 @@ void NeuralNetwork::feedForward(const vector<float> &input) {
 	}
 }
 
+// Author: Harmen Klink
 void NeuralNetwork::backPropagate(const std::vector<float> &target) {
 	NeuronLayer &output_layer = layers.back();
 	for (unsigned int neuron = 0; neuron < output_layer.output_values.size() - 1; ++neuron) {
@@ -77,8 +134,37 @@ void NeuralNetwork::backPropagate(const std::vector<float> &target) {
 	}
 }
 
+// Author: Harmen Klink
 vector<float>& NeuralNetwork::getOutput() {
 	return layers.back().output_values;
 }
 
+// Author: Kevin Bosman
+// Co-author: Harmen Klink
+void NeuralNetwork::exportNetwork(const std::string filename) {
+	std::ofstream exportDataFile;
+	exportDataFile.open(filename.c_str());
 
+	// Topology
+	exportDataFile << "topology:";
+	for (unsigned int l = 0; l < static_cast<unsigned int>(layers.size()); l++) {
+		exportDataFile << " " << layers[l].num_mut_nodes();
+	}
+	exportDataFile << std::endl;
+
+	// Layer loop
+	for (unsigned l = 0; l < layers.size() - 1; l++) {
+		//exportDataFile << "layer:" << l << std::endl;
+		NeuronLayer &currentLayer = layers[l];
+		// Neuron in layer loop
+		for (unsigned n = 0; n < layers[l].num_nodes(); n++) {
+			exportDataFile << "layer: " << l << " " << "neuron: " << n;
+			std::vector<float> &currentNeuronConnections = currentLayer.weights[n];
+			// Weights loop
+			for (unsigned w = 0; w < static_cast<unsigned int>(currentNeuronConnections.size()); w++) {
+				exportDataFile << " " << currentNeuronConnections[w];
+			}
+			exportDataFile << std::endl;
+		}
+	}
+}

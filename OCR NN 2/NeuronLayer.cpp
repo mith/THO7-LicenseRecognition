@@ -2,6 +2,8 @@
 
 using namespace std;
 
+// Author: Harmen Klink
+// Co-author: Simon Voordouw
 NeuronLayer::NeuronLayer(unsigned int size, unsigned int connections_per_neuron, bool biasnode)
 : biasnode(biasnode)
 {

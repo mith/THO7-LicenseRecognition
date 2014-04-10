@@ -18,6 +18,9 @@ int main(int argc, const char* argv[])
 	std::vector<unsigned int> topology({ trainingData.getNumberInput(), 30, 36 });
 
 	NeuralNetwork net(topology);
+	//net.exportNetwork("./Export/Net.txt");
+	//NeuralNetwork net2("./Export/Net.txt");
+	//net2.exportNetwork("./Export/Net2.txt");
 	std::vector<float> input(20, 0.88f);
 
 	BaseTimer tmr;
