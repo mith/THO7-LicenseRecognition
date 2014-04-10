@@ -1,5 +1,6 @@
 #pragma once
-
+#include <iostream>
+#include "ImageLib.h"
 #include "NeuronLayer.h"
 
 #include <vector>
@@ -12,6 +13,8 @@ public:
 	void feedForward(const std::vector<float> &input);
 	void backPropagate(const std::vector<float> &target);
 	std::vector<float>& getOutput();
+
+	int num_layers() const { return layers.size(); }
 
 private:
 	std::vector<NeuronLayer> layers;
