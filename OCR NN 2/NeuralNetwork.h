@@ -13,7 +13,7 @@ public:
 	void feedForward(const std::vector<float> &input);
 	void backPropagate(const std::vector<float> &target);
 	std::vector<float>& getOutput();
-	void export(const std::string filename);
+	void exportNetwork(const std::string filename);
 
 	unsigned int num_layers() const { return static_cast<unsigned int>(layers.size()); }
 

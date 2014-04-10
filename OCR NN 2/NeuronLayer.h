@@ -16,7 +16,7 @@ public:
 	std::vector<std::vector<float>> weights;
 
 private:
-	unsigned int num_nodes() const { return (unsigned int)output_values.size(); }
-	unsigned int num_mut_nodes() const { return (unsigned int)output_values.size() - (biasnode ? 1 : 0); }
+	unsigned int num_nodes() const { return static_cast<unsigned int>(output_values.size()); }
+	unsigned int num_mut_nodes() const { return static_cast<unsigned int>(output_values.size() - (biasnode ? 1 : 0)); }
 };
 
