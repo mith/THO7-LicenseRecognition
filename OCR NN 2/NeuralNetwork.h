@@ -14,7 +14,7 @@ public:
 	void backPropagate(const std::vector<float> &target);
 	std::vector<float>& getOutput();
 
-	int num_layers() const { return layers.size(); }
+	unsigned int num_layers() const { return static_cast<unsigned int>(layers.size()); }
 
 private:
 	std::vector<NeuronLayer> layers;

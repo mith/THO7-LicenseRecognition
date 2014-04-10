@@ -19,7 +19,7 @@ public:
 private:
 	std::vector<std::vector<float>> delta_weights;
 
-	int num_nodes() const { return output_values.size(); }
-	int num_mut_nodes() const { return output_values.size() - (biasnode ? 1 : 0); }
+	unsigned int num_nodes() const { return (unsigned int)output_values.size(); }
+	unsigned int num_mut_nodes() const { return (unsigned int)output_values.size() - (biasnode ? 1 : 0); }
 };
 

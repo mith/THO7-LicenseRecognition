@@ -1,5 +1,5 @@
 #include "NeuralNetwork.h"
-#define TRAINING_RATE 0.2
+#define TRAINING_RATE 0.2f
 #include "basetimer.h"
 #include <ppl.h>
 
@@ -8,7 +8,7 @@ using namespace std;
 NeuralNetwork::NeuralNetwork(const std::vector<unsigned int> topology)
 {
 	// Every element in the topology vector represents a layer, the value of each element is the amount of neurons in that layer
-	for (int layer = 0; layer < topology.size() - 1; layer++) {
+	for (unsigned int layer = 0; layer < topology.size() - 1; layer++) {
 		layers.emplace_back(topology[layer], topology[layer + 1], true);
 	}
 
@@ -28,7 +28,7 @@ void NeuralNetwork::feedForward(const vector<float> &input) {
 		throw new std::runtime_error("Wrong size input vector");
 	}
 
-	for (int i = 0; i < layers[0].num_nodes() - 1; i++) {
+	for (unsigned int i = 0; i < layers[0].num_nodes() - 1; i++) {
 		layers[0].output_values[i] = input[i];
 	}
 
@@ -59,7 +59,7 @@ void NeuralNetwork::backPropagate(const std::vector<float> &target) {
 	}
 
 	// Calculate hidden layer(s) neuron gradients
-	for (unsigned int layer = layers.size() - 2; layer != 0; --layer) {
+	for (unsigned int layer = static_cast<unsigned int>(layers.size() - 2); layer != 0; --layer) {
 		for (unsigned int current_neuron = 0; current_neuron < layers[layer].output_values.size(); ++current_neuron) {
 			float sum = 0.0; // Sum of this neuron's contribution to the errors of the next layer
 			for (unsigned int next_neuron = 0; next_neuron < layers[layer + 1].output_values.size() - 1; ++next_neuron) {
@@ -70,7 +70,7 @@ void NeuralNetwork::backPropagate(const std::vector<float> &target) {
 	}
 
 	// Update weights in all layers
-	for (unsigned int layer = layers.size() - 1; layer != 0; --layer) {
+	for (unsigned int layer = static_cast<unsigned int>(layers.size() - 1); layer != 0; --layer) {
 		for (unsigned int current_neuron = 0; current_neuron < layers[layer].output_values.size() - 1; ++current_neuron) {
 			for (unsigned int input_neuron = 0; current_neuron < layers[layer - 1].output_values.size(); ++input_neuron) {
 				layers[layer - 1].weights[input_neuron][current_neuron] += TRAINING_RATE * layers[layer - 1].output_values[input_neuron] * layers[layer].gradients[current_neuron];
@@ -87,7 +87,7 @@ int main() {
 	std::vector<unsigned int> topology({ 20, 30, 36 });
 
 	NeuralNetwork net(topology);
-	std::vector<float> input(20, 0.88);
+	std::vector<float> input(20, 0.88f);
 
 	BaseTimer tmr;
 	tmr.start();
