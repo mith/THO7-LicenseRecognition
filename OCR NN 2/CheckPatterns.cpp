@@ -65,7 +65,7 @@ double CheckPatterns::countBlackPixelsPerRowHorizontal(const ImageGray &sourceIm
 	auto end_ptr = sourceImage.data(0, y + 1);
 
 	for (auto pxl_ptr = sourceImage.data(0, y); pxl_ptr < end_ptr; pxl_ptr++) {
-		blackPixels += (int)(*pxl_ptr > thresholdValue);
+		blackPixels += (int)(*pxl_ptr < thresholdValue);
 	}
 
 	//bt->stop();
@@ -108,7 +108,7 @@ double CheckPatterns::countBlackPixelsPerLineVertical(const ImageGray &sourceIma
 
 	for (auto pxl_ptr = sourceImage.data(x, 0); pxl_ptr < end_ptr; pxl_ptr += sourceImage.width())
 	{
-		blackPixels += (int)(*pxl_ptr > thresholdValue);
+		blackPixels += (int)(*pxl_ptr < thresholdValue);
 	}
 
 	//bt->stop();
@@ -232,8 +232,8 @@ double CheckPatterns::checkSymmetryHorizontal(const ImageGray &sourceImage, bool
 			{
 				bool leftBlack = *left_ptr < thresholdValue;
 				bool rightBlack = *(left_ptr + offset) < thresholdValue;
-				numberOfBlackPixels += leftBlack;
-				bool bothBlack = leftBlack && rightBlack;
+				//numberOfBlackPixels += leftBlack;
+				bool bothBlack = leftBlack == rightBlack;
 				symmetricBlackPixels += (int)bothBlack;
 
 				left_ptr++;
@@ -244,7 +244,7 @@ double CheckPatterns::checkSymmetryHorizontal(const ImageGray &sourceImage, bool
 	//bt->stop();
 	//std::cout << "Time for the checkSymmetryHorizontal function: " << //bt->elapsedMicroSeconds() << " Microseconds (" << //bt->elapsedMilliSeconds() << "ms)" << std::endl;
 	//return (int)percentageSymmetric;
-	return Extensions::getWeightFromPercentage(Extensions::getPercentage(symmetricBlackPixels, numberOfBlackPixels));
+	return Extensions::getWeightFromPercentage(Extensions::getPercentage(symmetricBlackPixels, sourceImage.size()));
 }
 
 double CheckPatterns::checkSymmetryVertical(const ImageGray &sourceImage, bool boundingBox)
@@ -284,8 +284,8 @@ double CheckPatterns::checkSymmetryVertical(const ImageGray &sourceImage, bool b
 			{
 				bool topBlack = *top_ptr < thresholdValue;
 				bool bottomBlack = *(top_ptr + offset) < thresholdValue;
-				numberOfBlackPixels += topBlack;
-				bool bothBlack = topBlack && bottomBlack;
+				//numberOfBlackPixels += topBlack;
+				bool bothBlack = topBlack == bottomBlack;
 				symmetricBlackPixels += (int)bothBlack;
 
 				top_ptr += sourceImage.width();
@@ -296,7 +296,7 @@ double CheckPatterns::checkSymmetryVertical(const ImageGray &sourceImage, bool b
 	//bt->stop();
 	//std::cout << "Time for the checkSymmetryVertical function: " << //bt->elapsedMicroSeconds() << " Microseconds (" << //bt->elapsedMilliSeconds() << "ms)" << std::endl;
 	//return (int)percentageSymmetric;
-	return Extensions::getWeightFromPercentage(Extensions::getPercentage(symmetricBlackPixels, numberOfBlackPixels));
+	return Extensions::getWeightFromPercentage(Extensions::getPercentage(symmetricBlackPixels, sourceImage.size()));
 }
 
 int CheckPatterns::findLeftBlackPixel(const ImageGray &sourceImage)
