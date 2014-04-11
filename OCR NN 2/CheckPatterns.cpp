@@ -230,18 +230,19 @@ double CheckPatterns::checkSymmetryHorizontal(const ImageGray &sourceImage, bool
 	}
 	else
 	{
-		for (int y = sourceImage.height(); y >= 0; y--)
+		for (int y = 0; y < sourceImage.height(); y--)
 		{
-			for (int x = sourceImage.width(); x >= (sourceImage.width() / 2); x--)
+			auto left_ptr = sourceImage.data(0, y);
+			auto right_ptr = sourceImage.data(sourceImage.width() - 1, y);
+
+			while (left_ptr != right_ptr)
 			{
-				if (*(sourceImage.data(x, y)) < thresholdValue)
-				{
-					numberOfBlackPixels++;
-					if (*(sourceImage.data(sourceImage.width() - x, y)) < thresholdValue)
-					{
-						symmetricBlackPixels++;
-					}
-				}
+				numberOfBlackPixels += *left_ptr < thresholdValue;
+				bool bothBlack = (*left_ptr < thresholdValue) && (*right_ptr < thresholdValue);
+				symmetricBlackPixels += (int)bothBlack;
+
+				left_ptr++;
+				right_ptr--;
 			}
 		}
 	}
@@ -281,18 +282,19 @@ double CheckPatterns::checkSymmetryVertical(const ImageGray &sourceImage, bool b
 	}
 	else
 	{
-		for (int y = sourceImage.height(); y >= (sourceImage.height() / 2); y--)
+		for (int x = 0; x < sourceImage.width(); x++)
 		{
-			for (int x = sourceImage.width(); x >= 0; x--)
+			auto top_ptr = sourceImage.data(x, 0);
+			auto bottom_ptr = sourceImage.data(x, sourceImage.height() - 1);
+
+			while (top_ptr != bottom_ptr)
 			{
-				if (*(sourceImage.data(x, y)) < thresholdValue)
-				{
-					numberOfBlackPixels++;
-					if (*(sourceImage.data(x, sourceImage.height() - y)) < thresholdValue)
-					{
-						symmetricBlackPixels++;
-					}
-				}
+				numberOfBlackPixels += *top_ptr < thresholdValue;
+				bool bothBlack = (*top_ptr < thresholdValue) && (*bottom_ptr < thresholdValue);
+				symmetricBlackPixels += (int)bothBlack;
+
+				top_ptr += sourceImage.width();
+				bottom_ptr -= sourceImage.width();
 			}
 		}
 	}
