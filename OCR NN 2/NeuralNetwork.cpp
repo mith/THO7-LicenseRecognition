@@ -145,7 +145,7 @@ const vector<double>& NeuralNetwork::getOutput() const {
 
 // Author: Kevin Bosman
 // Co-author: Harmen Klink
-void NeuralNetwork::exportNetwork(const std::string filename) {
+void NeuralNetwork::exportNetwork(const std::string filename) const {
 	std::ofstream exportDataFile;
 	exportDataFile.open(filename.c_str());
 
@@ -159,11 +159,11 @@ void NeuralNetwork::exportNetwork(const std::string filename) {
 	// Layer loop
 	for (unsigned l = 0; l < layers.size() - 1; l++) {
 		//exportDataFile << "layer:" << l << std::endl;
-		NeuronLayer &currentLayer = layers[l];
+		const NeuronLayer &currentLayer = layers[l];
 		// Neuron in layer loop
 		for (unsigned n = 0; n < layers[l].num_nodes(); n++) {
 			exportDataFile << "layer: " << l << " " << "neuron: " << n;
-			std::vector<double> &currentNeuronConnections = currentLayer.weights[n];
+			const std::vector<double> &currentNeuronConnections = currentLayer.weights[n];
 			// Weights loop
 			for (unsigned w = 0; w < static_cast<unsigned int>(currentNeuronConnections.size()); w++) {
 				exportDataFile << " " << currentNeuronConnections[w];

@@ -30,24 +30,31 @@ int main(int argc, const char* argv[])
 	ocr.train(img_list, 2 * 1000 * 1000);
 	tmr.stop();
 
+	//ocr.export("./Export/OCR.txt");
+	
+
 	std::cout << "training took: " << tmr.elapsedSeconds() << " seconds." << std::endl;
 
 	int success = 0;
 
-	for (int pass = 0; pass < 10; pass++) {
+	for (int pass = 0; pass < 100; pass++) {
 		auto img_data = img_list.getRandom();
-		std::cout << "filename: " << img_data.filename << std::endl;
-		std::cout << "target char: " << img_data.getChar() << std::endl;
-		std::cout << "target output nodes: " << ocr.char_to_output(img_data.getChar()) << std::endl;
+		
 
 		auto result = ocr.convert(img_data.image);
-		std::cout << "output char: " << result.first << std::endl;
-		std::cout << "output nodes: " << ocr.output_nodes() << std::endl;
-
-		std::cout << "------------------------" << std::endl;
+		
 
 		if (result.first == img_data.getChar()) {
 			success++;
+		}
+		else {
+			std::cout << "filename: " << img_data.filename << std::endl;
+			std::cout << "target char: " << img_data.getChar() << std::endl;
+			std::cout << "target output nodes: " << ocr.char_to_output(img_data.getChar()) << std::endl;
+			std::cout << "output char: " << result.first << std::endl;
+			std::cout << "output nodes: " << ocr.output_nodes() << std::endl;
+
+			std::cout << "------------------------" << std::endl;
 		}
 	}
 	std::cout << "Times success out of 10 passes: " << success;

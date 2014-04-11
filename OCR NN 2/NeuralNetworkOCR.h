@@ -28,5 +28,7 @@ public:
 	char output_to_char(const std::vector<double> & v);
 	std::vector<double> char_to_output(char c);
 	std::vector<double> img_to_input(const ImageGray & img);
+
+	void export(std::string filename) const;
 };
 
