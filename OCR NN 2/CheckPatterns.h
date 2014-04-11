@@ -95,5 +95,10 @@ public:
 	int findRightBlackPixel(const ImageGray &sourceImage);
 	int findTopBlackPixel(const ImageGray &sourceImage);
 	int findBottomBlackPixel(const ImageGray &sourceImage);
+
+	double firstEdgeLocationLeft(const ImageGray & sourceImage, int percentage);
+	double firstEdgeLocationRight(const ImageGray & sourceImage, int percentage);
+	double firstEdgeLocationTop(const ImageGray & sourceImage, int percentage);
+	double firstEdgeLocationBottom(const ImageGray & sourceImage, int percentage);
 };
 

@@ -27,7 +27,7 @@ int main(int argc, const char* argv[])
 
 	BaseTimer tmr;
 	tmr.start();
-	ocr.train(img_list, 2 * 1000 * 1000);
+	ocr.train(img_list, 5 * 1000 * 1000);
 	tmr.stop();
 
 	//ocr.export("./Export/OCR.txt");

@@ -381,3 +381,95 @@ int CheckPatterns::findBottomBlackPixel(const ImageGray &sourceImage)
 	}
 	return yValue;
 };
+
+double CheckPatterns::firstEdgeLocationLeft(const ImageGray & sourceImage, int percentage)
+{
+	int y = Extensions::getValueFromPercentage(sourceImage.height(), percentage);
+	// set oldpixel to 1 because white is 1 and every ImageGray starts with white
+	auto end_ptr = sourceImage.data(sourceImage.width(), y);
+
+	bool oldpixel = 1;
+	int x = 0;
+
+	for (auto pxl_ptr = sourceImage.data(0, y); pxl_ptr < end_ptr; pxl_ptr++) {
+		bool currentPixel = (*pxl_ptr > thresholdValue);
+
+		if (oldpixel != currentPixel) {
+			return Extensions::getWeightFromPercentage(Extensions::getPercentage(y, sourceImage.width()));
+		}
+		
+		oldpixel = currentPixel;
+		x++;
+	}
+
+	return 1.0;
+}
+
+double CheckPatterns::firstEdgeLocationRight(const ImageGray & sourceImage, int percentage)
+{
+	int y = Extensions::getValueFromPercentage(sourceImage.height(), percentage);
+	// set oldpixel to 1 because white is 1 and every ImageGray starts with white
+	auto end_ptr = sourceImage.data(0, y);
+
+	bool oldpixel = 1;
+	int x = sourceImage.width() - 1;
+
+	for (auto pxl_ptr = sourceImage.data(sourceImage.width() - 1, y); pxl_ptr >= end_ptr; pxl_ptr--) {
+		bool currentPixel = (*pxl_ptr > thresholdValue);
+
+		if (oldpixel != currentPixel) {
+			return Extensions::getWeightFromPercentage(Extensions::getPercentage(y, sourceImage.width()));
+		}
+
+		oldpixel = currentPixel;
+		x--;
+	}
+
+	return 1.0;
+}
+
+double CheckPatterns::firstEdgeLocationTop(const ImageGray & sourceImage, int percentage)
+{
+	int x = Extensions::getValueFromPercentage(sourceImage.width(), percentage);
+	// set oldpixel to 1 because white is 1 and every ImageGray starts with white
+	auto end_ptr = sourceImage.data(x, sourceImage.height() - 1);
+
+	bool oldpixel = 1;
+	int y = 0;
+
+	for (auto pxl_ptr = sourceImage.data(x, 0); pxl_ptr >= end_ptr; pxl_ptr += sourceImage.width()) {
+		bool currentPixel = (*pxl_ptr > thresholdValue);
+
+		if (oldpixel != currentPixel) {
+			return Extensions::getWeightFromPercentage(Extensions::getPercentage(y, sourceImage.width()));
+		}
+
+		oldpixel = currentPixel;
+		y++;
+	}
+
+	return 1.0;
+}
+
+double CheckPatterns::firstEdgeLocationBottom(const ImageGray & sourceImage, int percentage)
+{
+	int x = Extensions::getValueFromPercentage(sourceImage.width(), percentage);
+	// set oldpixel to 1 because white is 1 and every ImageGray starts with white
+	auto end_ptr = sourceImage.data(x, 0);
+
+	bool oldpixel = 1;
+	int y = sourceImage.height() - 1;
+
+	for (auto pxl_ptr = sourceImage.data(x, sourceImage.height() - 1); pxl_ptr >= end_ptr; pxl_ptr -= sourceImage.width()) {
+		bool currentPixel = (*pxl_ptr > thresholdValue);
+
+		if (oldpixel != currentPixel) {
+			return Extensions::getWeightFromPercentage(Extensions::getPercentage(y, sourceImage.width()));
+		}
+
+		oldpixel = currentPixel;
+		y--;
+	}
+
+	return 1.0;
+}
