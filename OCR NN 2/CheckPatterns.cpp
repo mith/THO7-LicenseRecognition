@@ -62,12 +62,10 @@ double CheckPatterns::checkPixelsPerLineHorizontal(const ImageGray &sourceImage,
 	//int y = Extensions::getPercentage(percentage, sourceImage.height());
 	int blackPixels = 0;
 
-	for (int x = sourceImage.width() - 1; x >= 0; x--)
-	{
-		if (*(sourceImage.data(x, y)) > thresholdValue)
-		{
-			blackPixels++;
-		}
+	auto end_ptr = sourceImage.data(0, y + 1);
+
+	for (auto pxl_ptr = sourceImage.data(0, y); pxl_ptr < end_ptr; pxl_ptr++) {
+		blackPixels += (int)(*pxl_ptr > thresholdValue);
 	}
 
 	//bt->stop();
@@ -106,12 +104,11 @@ double CheckPatterns::checkPixelsPerLineVertical(const ImageGray &sourceImage, i
 	int x = Extensions::getValueFromPercentage(sourceImage.width(), percentage);
 	int blackPixels = 0;
 
-	for (int y = sourceImage.height() - 1; y >= 0; y--)
+	auto end_ptr = sourceImage.data(x, sourceImage.height());
+
+	for (auto pxl_ptr = sourceImage.data(x, 0); pxl_ptr < end_ptr; pxl_ptr += sourceImage.width())
 	{
-		if (*(sourceImage.data(x, y)) > thresholdValue)
-		{
-			blackPixels++;
-		}
+		blackPixels += (int)(*pxl_ptr > thresholdValue);
 	}
 
 	//bt->stop();
@@ -143,27 +140,19 @@ double CheckPatterns::checkBlackWhiteTransisitionHorizontal(const ImageGray &sou
 	int pixelCounter = 0;
 	// set oldpixel to 1 because white is 1 and every ImageGray starts with white
 	int oldPixel = 1;
-	char currentPixel = 0;
 
+	auto end_ptr = sourceImage.data(0, y + 1);
 
-	for (int x = sourceImage.width() - 1; x >= 0; x--)
-	{
+	bool oldpixel = 1;
 
-		if (*(sourceImage.data(x, y)) > thresholdValue)
-		{
-
-			currentPixel = 1.0;
-		}
-		else
-		{
-			currentPixel = 0.0;
+	for (auto pxl_ptr = sourceImage.data(0, y); pxl_ptr < end_ptr; pxl_ptr++) {
+		bool currentPixel = 0;
+		if (*pxl_ptr > thresholdValue) {
+			currentPixel = 1;
 		}
 
-		if (currentPixel != oldPixel)
-		{
-			pixelCounter++;
-			oldPixel = currentPixel;
-		}
+		pixelCounter += (int)(currentPixel != oldPixel);
+		oldPixel = currentPixel;
 	}
 
 	//bt->stop();
@@ -187,26 +176,21 @@ double CheckPatterns::checkBlackWhiteTransisitionVertical(const ImageGray &sourc
 	//bt->start();
 	int x = Extensions::getValueFromPercentage(sourceImage.width(), percentage);
 	int pixelCounter = 0;
-	char currentPixel = 0;
 	// set oldpixel to 1 because white is 1 and every ImageGray starts with white
 	int oldPixel = 1;
 
-	for (int y = sourceImage.height() - 1; y >= 0; y--)
-	{
-		if (*(sourceImage.data(x, y)) > thresholdValue)
-		{
+	auto end_ptr = sourceImage.data(x, sourceImage.height());
+
+	bool oldpixel = 1;
+
+	for (auto pxl_ptr = sourceImage.data(x, 0); pxl_ptr < end_ptr; pxl_ptr += sourceImage.width()) {
+		bool currentPixel = 0;
+		if (*pxl_ptr > thresholdValue) {
 			currentPixel = 1;
 		}
-		else
-		{
-			currentPixel = 0;
-		}
 
-		if (currentPixel != oldPixel)
-		{
-			pixelCounter++;
-			oldPixel = currentPixel;
-		}
+		pixelCounter += (int)(currentPixel != oldPixel);
+		oldPixel = currentPixel;
 	}
 
 	//bt->stop();
