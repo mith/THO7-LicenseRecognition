@@ -473,3 +473,35 @@ double CheckPatterns::firstEdgeLocationBottom(const ImageGray & sourceImage, int
 
 	return 1.0;
 }
+
+double CheckPatterns::percentageBlack(const ImageGray & sourceImage, int xleft, int ytop, int xright, int ybottom)
+{
+	std::pair<int, int> topleft = {
+		Extensions::getValueFromPercentage(sourceImage.width(), xleft),
+		Extensions::getValueFromPercentage(sourceImage.height(), ytop),
+	};
+
+	std::pair<int, int> bottomright = {
+		Extensions::getValueFromPercentage(sourceImage.width(), xright),
+		Extensions::getValueFromPercentage(sourceImage.height(), ybottom),
+	};
+
+	std::pair<int, int> size = {
+		bottomright.first - topleft.first,
+		bottomright.second - topleft.second
+	};
+
+	unsigned int numBlack = 0;
+
+	auto pxl_ptr = sourceImage.data(topleft.first, topleft.second);
+
+	for (int y = size.second; y > 0; --y) {
+		for (int x = size.first; x > 0; --x) {
+			numBlack += *pxl_ptr > thresholdValue;
+			pxl_ptr++;
+		}
+		pxl_ptr += sourceImage.width() - size.first;
+	}
+
+	return Extensions::getWeightFromPercentage(Extensions::getPercentage(numBlack, size.first * size.second));
+}
