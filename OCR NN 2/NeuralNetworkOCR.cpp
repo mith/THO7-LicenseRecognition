@@ -50,28 +50,29 @@ void NeuralNetworkOCR::train(const ImageList & images, int passes)
 std::vector<double> NeuralNetworkOCR::img_to_input(const ImageGray & img)
 {
 	std::vector<double> input {
-		(double)patterns.checkPixelsPerLineHorizontal(img, 30),
-		(double)patterns.checkPixelsPerLineHorizontal(img, 50),
-		(double)patterns.checkPixelsPerLineHorizontal(img, 60),
-		(double)patterns.checkPixelsPerLineHorizontal(img, 80),
+		patterns.checkPixelsPerLineHorizontal(img, 30),
+		patterns.checkPixelsPerLineHorizontal(img, 50),
+		patterns.checkPixelsPerLineHorizontal(img, 60),
+		patterns.checkPixelsPerLineHorizontal(img, 80),
 		
-		(double)patterns.checkPixelsPerLineVertical(img, 30),
-		(double)patterns.checkPixelsPerLineVertical(img, 50),
-		(double)patterns.checkPixelsPerLineVertical(img, 60),
-		(double)patterns.checkPixelsPerLineVertical(img, 80),
+		patterns.checkPixelsPerLineVertical(img, 30),
+		patterns.checkPixelsPerLineVertical(img, 50),
+		patterns.checkPixelsPerLineVertical(img, 60),
+		patterns.checkPixelsPerLineVertical(img, 80),
+
 		
-		(double)patterns.checkSymmetryVertical(img),
-		(double)patterns.checkSymmetryHorizontal(img),
+		patterns.checkSymmetryVertical(img),
+		patterns.checkSymmetryHorizontal(img),
 		
-		(double)patterns.checkBlackWhiteTransisitionHorizontal(img, 30),
-		(double)patterns.checkBlackWhiteTransisitionHorizontal(img, 50),
-		(double)patterns.checkBlackWhiteTransisitionHorizontal(img, 60),
-		(double)patterns.checkBlackWhiteTransisitionHorizontal(img, 80),
+		patterns.checkBlackWhiteTransisitionHorizontal(img, 30),
+		patterns.checkBlackWhiteTransisitionHorizontal(img, 50),
+		patterns.checkBlackWhiteTransisitionHorizontal(img, 60),
+		patterns.checkBlackWhiteTransisitionHorizontal(img, 80),
 		
-		(double)patterns.checkBlackWhiteTransisitionVertical(img, 30),
-		(double)patterns.checkBlackWhiteTransisitionVertical(img, 50),
-		(double)patterns.checkBlackWhiteTransisitionVertical(img, 60),
-		(double)patterns.checkBlackWhiteTransisitionVertical(img, 80),
+		patterns.checkBlackWhiteTransisitionVertical(img, 30),
+		patterns.checkBlackWhiteTransisitionVertical(img, 50),
+		patterns.checkBlackWhiteTransisitionVertical(img, 60),
+		patterns.checkBlackWhiteTransisitionVertical(img, 80),
 	};
 
 	return input;

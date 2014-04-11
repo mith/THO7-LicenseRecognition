@@ -13,6 +13,12 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="PGO Training Data">
+      <UniqueIdentifier>{059ad82c-4c53-4cd4-884a-42054c618571}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PGO Training Data\x64">
+      <UniqueIdentifier>{a0cb5c1e-fd5a-44b9-897d-9f3ad339461f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="NeuralNetwork.h">
@@ -57,6 +63,9 @@
   <ItemGroup>
     <None Include="packages.config">
       <Filter>Source Files</Filter>
+    </None>
+    <None Include="PGO Training Data\x64\OCR NN 2.pgd">
+      <Filter>PGO Training Data\x64</Filter>
     </None>
   </ItemGroup>
 </Project>

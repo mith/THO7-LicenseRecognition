@@ -146,10 +146,7 @@ double CheckPatterns::checkBlackWhiteTransisitionHorizontal(const ImageGray &sou
 	bool oldpixel = 1;
 
 	for (auto pxl_ptr = sourceImage.data(0, y); pxl_ptr < end_ptr; pxl_ptr++) {
-		bool currentPixel = 0;
-		if (*pxl_ptr > thresholdValue) {
-			currentPixel = 1;
-		}
+		bool currentPixel = (*pxl_ptr > thresholdValue);
 
 		pixelCounter += (int)(currentPixel != oldPixel);
 		oldPixel = currentPixel;
@@ -184,10 +181,7 @@ double CheckPatterns::checkBlackWhiteTransisitionVertical(const ImageGray &sourc
 	bool oldpixel = 1;
 
 	for (auto pxl_ptr = sourceImage.data(x, 0); pxl_ptr < end_ptr; pxl_ptr += sourceImage.width()) {
-		bool currentPixel = 0;
-		if (*pxl_ptr > thresholdValue) {
-			currentPixel = 1;
-		}
+		bool currentPixel = (*pxl_ptr > thresholdValue);
 
 		pixelCounter += (int)(currentPixel != oldPixel);
 		oldPixel = currentPixel;
@@ -230,19 +224,19 @@ double CheckPatterns::checkSymmetryHorizontal(const ImageGray &sourceImage, bool
 	}
 	else
 	{
-		for (int y = 0; y < sourceImage.height(); y--)
+		for (int y = 0; y < sourceImage.height(); y++)
 		{
 			auto left_ptr = sourceImage.data(0, y);
-			auto right_ptr = sourceImage.data(sourceImage.width() - 1, y);
 
-			while (left_ptr != right_ptr)
+			for (int offset = sourceImage.width() - 1; offset > 0; offset -= 2)
 			{
-				numberOfBlackPixels += *left_ptr < thresholdValue;
-				bool bothBlack = (*left_ptr < thresholdValue) && (*right_ptr < thresholdValue);
+				bool leftBlack = *left_ptr < thresholdValue;
+				bool rightBlack = *(left_ptr + offset) < thresholdValue;
+				numberOfBlackPixels += leftBlack;
+				bool bothBlack = leftBlack && rightBlack;
 				symmetricBlackPixels += (int)bothBlack;
 
 				left_ptr++;
-				right_ptr--;
 			}
 		}
 	}
@@ -285,16 +279,16 @@ double CheckPatterns::checkSymmetryVertical(const ImageGray &sourceImage, bool b
 		for (int x = 0; x < sourceImage.width(); x++)
 		{
 			auto top_ptr = sourceImage.data(x, 0);
-			auto bottom_ptr = sourceImage.data(x, sourceImage.height() - 1);
 
-			while (top_ptr != bottom_ptr)
+			for (int offset = sourceImage.height() - 1; offset > 0; offset -= 2)
 			{
-				numberOfBlackPixels += *top_ptr < thresholdValue;
-				bool bothBlack = (*top_ptr < thresholdValue) && (*bottom_ptr < thresholdValue);
+				bool topBlack = *top_ptr < thresholdValue;
+				bool bottomBlack = *(top_ptr + offset) < thresholdValue;
+				numberOfBlackPixels += topBlack;
+				bool bothBlack = topBlack && bottomBlack;
 				symmetricBlackPixels += (int)bothBlack;
 
 				top_ptr += sourceImage.width();
-				bottom_ptr -= sourceImage.width();
 			}
 		}
 	}
