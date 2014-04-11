@@ -10,7 +10,8 @@ ImageList::ImageList(const std::string & image_dir) : image_dir(image_dir)
 	auto img_files = getFilelist(image_dir + "\\*.jpg");
 
 	for (auto & file_name : img_files) {
-		images.emplace_back(file_name.front(), ImageGray(image_dir + "\\" + file_name));
+		char c = file_name.front();
+		images.emplace_back((c > 96 && c < 123) ? c - 32 : c, ImageGray(image_dir + "\\" + file_name));
 	}
 }
 
@@ -37,4 +38,15 @@ std::vector<std::string> ImageList::getFilelist(const std::string & searchkey)
 			break;
 	}
 	return ret_list;
+}
+
+std::pair<char, const ImageGray &> ImageList::operator [] (int id) const
+{
+	return{ images[id].first, images[id].second };
+}
+
+std::pair<char, const ImageGray &> ImageList::getRandom() const
+{
+	int id = (rand() * (int)(images.size() - 1) / RAND_MAX);
+	return{ images[id].first, images[id].second };
 }

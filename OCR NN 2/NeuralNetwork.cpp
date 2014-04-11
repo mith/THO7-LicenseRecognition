@@ -139,7 +139,7 @@ void NeuralNetwork::backPropagate(const std::vector<float> &target) {
 }
 
 // Author: Harmen Klink
-vector<float>& NeuralNetwork::getOutput() {
+const vector<float>& NeuralNetwork::getOutput() const {
 	return layers.back().output_values;
 }
 

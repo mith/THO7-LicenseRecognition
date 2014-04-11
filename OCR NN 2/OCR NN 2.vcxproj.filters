@@ -27,10 +27,10 @@
     <ClInclude Include="Extensions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="OCRImageData.h">
+    <ClInclude Include="ImageList.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ImageList.h">
+    <ClInclude Include="NeuralNetworkOCR.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -47,10 +47,10 @@
     <ClCompile Include="CheckPatterns.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="OCRImageData.cpp">
+    <ClCompile Include="ImageList.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ImageList.cpp">
+    <ClCompile Include="NeuralNetworkOCR.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
