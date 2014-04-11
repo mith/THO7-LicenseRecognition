@@ -43,7 +43,7 @@ CheckPatterns::~CheckPatterns()
 * @return
 */
 
-double CheckPatterns::checkPixelsPerLineHorizontal(const ImageGray &sourceImage, int percentage)
+double CheckPatterns::countBlackPixelsPerRowHorizontal(const ImageGray &sourceImage, int percentage)
 {
 	//bt->reset();
 	//bt->start();
@@ -69,7 +69,7 @@ double CheckPatterns::checkPixelsPerLineHorizontal(const ImageGray &sourceImage,
 	}
 
 	//bt->stop();
-	//std::cout << "Time for the checkPixelsPerLineHorizontal function: " << //bt->elapsedMicroSeconds() << " Microseconds (" << //bt->elapsedMilliSeconds() << "ms)" << std::endl;
+	//std::cout << "Time for the countBlackPixelsPerRowHorizontal function: " << //bt->elapsedMicroSeconds() << " Microseconds (" << //bt->elapsedMilliSeconds() << "ms)" << std::endl;
 
 	//return blackPixels;
 	//return (int)(blackPixels / (double)(sourceImage.width()) * 100);
@@ -86,7 +86,7 @@ double CheckPatterns::checkPixelsPerLineHorizontal(const ImageGray &sourceImage,
 * @return
 */
 
-double CheckPatterns::checkPixelsPerLineVertical(const ImageGray &sourceImage, int percentage)
+double CheckPatterns::countBlackPixelsPerLineVertical(const ImageGray &sourceImage, int percentage)
 {
 	//bt->reset();
 	//bt->start();
@@ -112,7 +112,7 @@ double CheckPatterns::checkPixelsPerLineVertical(const ImageGray &sourceImage, i
 	}
 
 	//bt->stop();
-	//std::cout << "Time for the checkPixelsPerLineVertical function: " << //bt->elapsedMicroSeconds() << " Microseconds (" << //bt->elapsedMilliSeconds() << "ms)" << std::endl;
+	//std::cout << "Time for the countBlackPixelsPerLineVertical function: " << //bt->elapsedMicroSeconds() << " Microseconds (" << //bt->elapsedMilliSeconds() << "ms)" << std::endl;
 
 	//return blackPixels;
 	//return (int)(blackPixels / (double)(sourceImage.height()) * 100);
@@ -122,7 +122,7 @@ double CheckPatterns::checkPixelsPerLineVertical(const ImageGray &sourceImage, i
 // =======================================================================================
 
 /**
-* checkBlackWhiteTransisitionHorizontal will look for transisiton in an ImageGray on the horizontal axis. These transitions are made from
+* countBlackWhiteTransisitionHorizontal will look for transisiton in an ImageGray on the horizontal axis. These transitions are made from
 * black to white or white to black. If a transisition is detected a counter will be increased.
 *
 * @param  sourceImage
@@ -130,7 +130,7 @@ double CheckPatterns::checkPixelsPerLineVertical(const ImageGray &sourceImage, i
 * @return
 */
 
-double CheckPatterns::checkBlackWhiteTransisitionHorizontal(const ImageGray &sourceImage, int percentage)
+double CheckPatterns::countBlackWhiteTransisitionHorizontal(const ImageGray &sourceImage, int percentage)
 {
 	//bt->reset();
 	//bt->start();
@@ -167,7 +167,7 @@ double CheckPatterns::checkBlackWhiteTransisitionHorizontal(const ImageGray &sou
 * @return
 */
 
-double CheckPatterns::checkBlackWhiteTransisitionVertical(const ImageGray &sourceImage, int percentage)
+double CheckPatterns::countBlackWhiteTransisitionVertical(const ImageGray &sourceImage, int percentage)
 {
 	//bt->reset();
 	//bt->start();

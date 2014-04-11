@@ -50,29 +50,28 @@ void NeuralNetworkOCR::train(const ImageList & images, int passes)
 std::vector<double> NeuralNetworkOCR::img_to_input(const ImageGray & img)
 {
 	std::vector<double> input {
-		patterns.checkPixelsPerLineHorizontal(img, 30),
-		patterns.checkPixelsPerLineHorizontal(img, 50),
-		patterns.checkPixelsPerLineHorizontal(img, 60),
-		patterns.checkPixelsPerLineHorizontal(img, 80),
+		patterns.countBlackPixelsPerRowHorizontal(img, 30),
+		patterns.countBlackPixelsPerRowHorizontal(img, 50),
+		patterns.countBlackPixelsPerRowHorizontal(img, 60),
+		patterns.countBlackPixelsPerRowHorizontal(img, 80),
 		
-		patterns.checkPixelsPerLineVertical(img, 30),
-		patterns.checkPixelsPerLineVertical(img, 50),
-		patterns.checkPixelsPerLineVertical(img, 60),
-		patterns.checkPixelsPerLineVertical(img, 80),
+		patterns.countBlackPixelsPerLineVertical(img, 30),
+		patterns.countBlackPixelsPerLineVertical(img, 50),
+		patterns.countBlackPixelsPerLineVertical(img, 60),
+		patterns.countBlackPixelsPerLineVertical(img, 80),
 
-		
 		patterns.checkSymmetryVertical(img),
 		patterns.checkSymmetryHorizontal(img),
 		
-		patterns.checkBlackWhiteTransisitionHorizontal(img, 30),
-		patterns.checkBlackWhiteTransisitionHorizontal(img, 50),
-		patterns.checkBlackWhiteTransisitionHorizontal(img, 60),
-		patterns.checkBlackWhiteTransisitionHorizontal(img, 80),
+		patterns.countBlackWhiteTransisitionHorizontal(img, 30),
+		patterns.countBlackWhiteTransisitionHorizontal(img, 50),
+		patterns.countBlackWhiteTransisitionHorizontal(img, 60),
+		patterns.countBlackWhiteTransisitionHorizontal(img, 80),
 		
-		patterns.checkBlackWhiteTransisitionVertical(img, 30),
-		patterns.checkBlackWhiteTransisitionVertical(img, 50),
-		patterns.checkBlackWhiteTransisitionVertical(img, 60),
-		patterns.checkBlackWhiteTransisitionVertical(img, 80),
+		patterns.countBlackWhiteTransisitionVertical(img, 30),
+		patterns.countBlackWhiteTransisitionVertical(img, 50),
+		patterns.countBlackWhiteTransisitionVertical(img, 60),
+		patterns.countBlackWhiteTransisitionVertical(img, 80),
 	};
 
 	return input;

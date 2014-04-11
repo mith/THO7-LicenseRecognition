@@ -34,20 +34,20 @@ public:
 	// 
 	// ImageGray &sourceImage takes a reference to an ImageGray object
 	// int percentage specifies the percentage of the height line in a range from 0 - 100%
-	double checkPixelsPerLineHorizontal(const ImageGray &sourceImage, int percentage);
+	double countBlackPixelsPerRowHorizontal(const ImageGray &sourceImage, int percentage);
 
 	// This function checks how much pixels in one width line are black and returns the
 	// normalized percentage in the range of +1 / -1.
 	// 
 	// ImageGray &sourceImage takes a reference to an ImageGray object
 	// int percentage specifies the percentage of the width line in a range from 0 - 100%
-	double checkPixelsPerLineVertical(const ImageGray &sourceImage, int percentage);
+	double countBlackPixelsPerLineVertical(const ImageGray &sourceImage, int percentage);
 
 	// =======================================================================================
 
 	// BlackWhiteTransition - Wouter Veen
-	double checkBlackWhiteTransisitionVertical(const ImageGray &sourceImage, int percentage);
-	double checkBlackWhiteTransisitionHorizontal(const ImageGray &sourceImage, int percentage);
+	double countBlackWhiteTransisitionVertical(const ImageGray &sourceImage, int percentage);
+	double countBlackWhiteTransisitionHorizontal(const ImageGray &sourceImage, int percentage);
 
 	// =======================================================================================
 	// CheckSymmetry - Thomas Kok
