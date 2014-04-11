@@ -31,6 +31,9 @@ int main(int argc, const char* argv[])
 	tmr.stop();
 
 	//ocr.export("./Export/OCR.txt");
+
+	// TODO: firstEdgeLocation{Left,Right,Top,Bottom}
+	// TODO: percentageBlack(x, y, x2, y3)
 	
 
 	std::cout << "training took: " << tmr.elapsedSeconds() << " seconds." << std::endl;
