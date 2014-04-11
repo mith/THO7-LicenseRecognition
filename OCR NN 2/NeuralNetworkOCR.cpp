@@ -4,7 +4,7 @@
 
 
 NeuralNetworkOCR::NeuralNetworkOCR() 
-: neural_network(std::vector<unsigned int>{18, 30, 36})
+: neural_network(std::vector<unsigned int>{18, 40, 36})
 {
 }
 
@@ -39,11 +39,11 @@ void NeuralNetworkOCR::train(const ImageList & images, int passes)
 	for (int pass = 0; pass < passes; pass++) {
 		auto img_data = images.getRandom();
 
-		auto input = img_to_input(img_data.second);
+		auto input = img_to_input(img_data.image);
 
 		neural_network.feedForward(input);
 
-		neural_network.backPropagate(char_to_output(img_data.first));
+		neural_network.backPropagate(char_to_output(img_data.getChar()));
 	}
 }
 
