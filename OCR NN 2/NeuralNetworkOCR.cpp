@@ -18,7 +18,7 @@ NeuralNetworkOCR::~NeuralNetworkOCR()
 {
 }
 
-std::pair<char, float> NeuralNetworkOCR::convert(const ImageGray & img)
+std::pair<char, double> NeuralNetworkOCR::convert(const ImageGray & img)
 {
 	auto input = img_to_input(img);
 
@@ -29,7 +29,7 @@ std::pair<char, float> NeuralNetworkOCR::convert(const ImageGray & img)
 	return { output_to_char(neural_network.getOutput()), 1.0f };
 }
 
-const std::vector<float> & NeuralNetworkOCR::output_nodes() const
+const std::vector<double> & NeuralNetworkOCR::output_nodes() const
 {
 	return neural_network.getOutput();
 }
@@ -47,37 +47,37 @@ void NeuralNetworkOCR::train(const ImageList & images, int passes)
 	}
 }
 
-std::vector<float> NeuralNetworkOCR::img_to_input(const ImageGray & img)
+std::vector<double> NeuralNetworkOCR::img_to_input(const ImageGray & img)
 {
-	std::vector<float> input {
-		(float)patterns.checkPixelsPerLineHorizontal(img, 30),
-		(float)patterns.checkPixelsPerLineHorizontal(img, 50),
-		(float)patterns.checkPixelsPerLineHorizontal(img, 60),
-		(float)patterns.checkPixelsPerLineHorizontal(img, 80),
+	std::vector<double> input {
+		(double)patterns.checkPixelsPerLineHorizontal(img, 30),
+		(double)patterns.checkPixelsPerLineHorizontal(img, 50),
+		(double)patterns.checkPixelsPerLineHorizontal(img, 60),
+		(double)patterns.checkPixelsPerLineHorizontal(img, 80),
 		
-		(float)patterns.checkPixelsPerLineVertical(img, 30),
-		(float)patterns.checkPixelsPerLineVertical(img, 50),
-		(float)patterns.checkPixelsPerLineVertical(img, 60),
-		(float)patterns.checkPixelsPerLineVertical(img, 80),
+		(double)patterns.checkPixelsPerLineVertical(img, 30),
+		(double)patterns.checkPixelsPerLineVertical(img, 50),
+		(double)patterns.checkPixelsPerLineVertical(img, 60),
+		(double)patterns.checkPixelsPerLineVertical(img, 80),
 		
-		(float)patterns.checkSymmetryVertical(img),
-		(float)patterns.checkSymmetryHorizontal(img),
+		(double)patterns.checkSymmetryVertical(img),
+		(double)patterns.checkSymmetryHorizontal(img),
 		
-		(float)patterns.checkBlackWhiteTransisitionHorizontal(img, 30),
-		(float)patterns.checkBlackWhiteTransisitionHorizontal(img, 50),
-		(float)patterns.checkBlackWhiteTransisitionHorizontal(img, 60),
-		(float)patterns.checkBlackWhiteTransisitionHorizontal(img, 80),
+		(double)patterns.checkBlackWhiteTransisitionHorizontal(img, 30),
+		(double)patterns.checkBlackWhiteTransisitionHorizontal(img, 50),
+		(double)patterns.checkBlackWhiteTransisitionHorizontal(img, 60),
+		(double)patterns.checkBlackWhiteTransisitionHorizontal(img, 80),
 		
-		(float)patterns.checkBlackWhiteTransisitionVertical(img, 30),
-		(float)patterns.checkBlackWhiteTransisitionVertical(img, 50),
-		(float)patterns.checkBlackWhiteTransisitionVertical(img, 60),
-		(float)patterns.checkBlackWhiteTransisitionVertical(img, 80),
+		(double)patterns.checkBlackWhiteTransisitionVertical(img, 30),
+		(double)patterns.checkBlackWhiteTransisitionVertical(img, 50),
+		(double)patterns.checkBlackWhiteTransisitionVertical(img, 60),
+		(double)patterns.checkBlackWhiteTransisitionVertical(img, 80),
 	};
 
 	return input;
 }
 
-char NeuralNetworkOCR::output_to_char(const std::vector<float> & output)
+char NeuralNetworkOCR::output_to_char(const std::vector<double> & output)
 {
 	unsigned int highest = 0;
 	for (unsigned int i = 1; i < output.size() - 1; ++i) {
@@ -93,9 +93,9 @@ char NeuralNetworkOCR::output_to_char(const std::vector<float> & output)
 	}
 }
 
-std::vector<float> NeuralNetworkOCR::char_to_output(char c)
+std::vector<double> NeuralNetworkOCR::char_to_output(char c)
 {
-	std::vector<float> output(36, -1.0f);
+	std::vector<double> output(36, -1.0f);
 
 	if (c > 47 && c < 58) {
 		output[c - 48] = 1.0; // Numbers 0-9 in indices 0-9

@@ -20,13 +20,13 @@ public:
 	NeuralNetworkOCR(const std::string & importFile);
 	~NeuralNetworkOCR();
 
-	std::pair<char, float> convert(const ImageGray & img);
+	std::pair<char, double> convert(const ImageGray & img);
 	void train(const ImageList & images, int passes);
 
-	const std::vector<float> & output_nodes() const;
+	const std::vector<double> & output_nodes() const;
 
-	char output_to_char(const std::vector<float> & v);
-	std::vector<float> char_to_output(char c);
-	std::vector<float> img_to_input(const ImageGray & img);
+	char output_to_char(const std::vector<double> & v);
+	std::vector<double> char_to_output(char c);
+	std::vector<double> img_to_input(const ImageGray & img);
 };
 

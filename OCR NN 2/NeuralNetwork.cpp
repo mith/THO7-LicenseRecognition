@@ -60,7 +60,7 @@ NeuralNetwork::NeuralNetwork(const std::string &importFile) {
 		ss >> label;
 		ss >> neuronNumber;
 		// Assign weights
-		float weight;
+		double weight;
 		for (unsigned int weight_i = 0; ss >> weight; ++weight_i){
 			layers[layerNumber].weights[neuronNumber][weight_i] = weight;
 		}
@@ -76,7 +76,7 @@ NeuralNetwork::~NeuralNetwork()
 
 // Author: Harmen Klink
 // Co-author: Simon Voordouw
-void NeuralNetwork::feedForward(const vector<float> &input) {
+void NeuralNetwork::feedForward(const vector<double> &input) {
 	// Set input values of input neurons
 	if (input.size() != layers[0].num_nodes() - 1) {
 		throw new std::runtime_error("Wrong size input vector");
@@ -93,7 +93,7 @@ void NeuralNetwork::feedForward(const vector<float> &input) {
 
 		for (unsigned int current_neuron = 0; current_neuron < current_layer.num_mut_nodes(); ++current_neuron) {
 			// Sum all the connections to this neuron from the previous layer
-			float sum = 0.0;
+			double sum = 0.0;
 			const NeuronLayer & previous_layer = layers[layer_i - 1];
 			// Loop through all connections from the previous layer to this neuron	
 			for (unsigned int input_neuron = 0; input_neuron < previous_layer.num_nodes(); ++input_neuron) {
@@ -105,10 +105,10 @@ void NeuralNetwork::feedForward(const vector<float> &input) {
 }
 
 // Author: Harmen Klink
-void NeuralNetwork::backPropagate(const std::vector<float> &target) {
+void NeuralNetwork::backPropagate(const std::vector<double> &target) {
 	NeuronLayer &output_layer = layers.back();
 	for (unsigned int neuron = 0; neuron < output_layer.num_mut_nodes(); ++neuron) { // NO BIAS NEURON IN OUTPUT LAYER ANYMORE????
-		float neuron_error = target[neuron] - output_layer.output_values[neuron]; // Calculate neuron error
+		double neuron_error = target[neuron] - output_layer.output_values[neuron]; // Calculate neuron error
 		//Calculate gradient for this output neuron by multiplying the neuron error with the derivative of the outputvalue of tanh
 		output_layer.gradients[neuron] = neuron_error * (1 - (tanh(output_layer.output_values[neuron]) * tanh(output_layer.output_values[neuron])));
 	}
@@ -118,7 +118,7 @@ void NeuralNetwork::backPropagate(const std::vector<float> &target) {
 		NeuronLayer & current_layer = layers[layer];
 		for (unsigned int current_neuron = 0; current_neuron < current_layer.num_nodes(); ++current_neuron) {
 			
-			float sum = 0.0; // Sum of this neuron's contribution to the errors of the next layer
+			double sum = 0.0; // Sum of this neuron's contribution to the errors of the next layer
 			for (unsigned int next_neuron = 0; next_neuron < layers[layer + 1].num_mut_nodes(); ++next_neuron) {
 				sum += layers[layer].weights[current_neuron][next_neuron] * layers[layer + 1].gradients[next_neuron];
 			}
@@ -139,7 +139,7 @@ void NeuralNetwork::backPropagate(const std::vector<float> &target) {
 }
 
 // Author: Harmen Klink
-const vector<float>& NeuralNetwork::getOutput() const {
+const vector<double>& NeuralNetwork::getOutput() const {
 	return layers.back().output_values;
 }
 
@@ -163,7 +163,7 @@ void NeuralNetwork::exportNetwork(const std::string filename) {
 		// Neuron in layer loop
 		for (unsigned n = 0; n < layers[l].num_nodes(); n++) {
 			exportDataFile << "layer: " << l << " " << "neuron: " << n;
-			std::vector<float> &currentNeuronConnections = currentLayer.weights[n];
+			std::vector<double> &currentNeuronConnections = currentLayer.weights[n];
 			// Weights loop
 			for (unsigned w = 0; w < static_cast<unsigned int>(currentNeuronConnections.size()); w++) {
 				exportDataFile << " " << currentNeuronConnections[w];

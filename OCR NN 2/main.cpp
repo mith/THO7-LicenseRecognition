@@ -3,7 +3,7 @@
 #include "NeuralNetworkOCR.h"
 #include "ImageList.h"
 
-std::ostream& operator<< (std::ostream& stream, const std::vector<float>& fs)
+std::ostream& operator<< (std::ostream& stream, const std::vector<double>& fs)
 {
 	stream << '[';
 

@@ -11,9 +11,9 @@ public:
 	~NeuronLayer();
 
 	const bool biasnode;
-	std::vector<float> output_values;
-	std::vector<float> gradients;
-	std::vector<std::vector<float>> weights;
+	std::vector<double> output_values;
+	std::vector<double> gradients;
+	std::vector<std::vector<double>> weights;
 
 private:
 	unsigned int num_nodes() const { return static_cast<unsigned int>(output_values.size()); }

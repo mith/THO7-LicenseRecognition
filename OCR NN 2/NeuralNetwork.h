@@ -10,15 +10,15 @@ public:
 	NeuralNetwork(const std::vector<unsigned int> topology);
 	NeuralNetwork(const std::string &importFile);
 	~NeuralNetwork();
-	void feedForward(const std::vector<float> &input);
-	void backPropagate(const std::vector<float> &target);
-	const std::vector<float>& getOutput() const;
+	void feedForward(const std::vector<double> &input);
+	void backPropagate(const std::vector<double> &target);
+	const std::vector<double>& getOutput() const;
 	void exportNetwork(const std::string filename);
 
 	unsigned int num_layers() const { return static_cast<unsigned int>(layers.size()); }
 
 private:
 	std::vector<NeuronLayer> layers;
-	float network_error;
+	double network_error;
 };
 
