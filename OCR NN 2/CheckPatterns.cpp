@@ -43,7 +43,7 @@ CheckPatterns::~CheckPatterns()
 * @return
 */
 
-double CheckPatterns::countBlackPixelsPerRowHorizontal(const ImageGray &sourceImage, int percentage)
+double CheckPatterns::checkPixelsPerLineHorizontal(const ImageGray &sourceImage, int percentage)
 {
 	//bt->reset();
 	//bt->start();
@@ -62,14 +62,16 @@ double CheckPatterns::countBlackPixelsPerRowHorizontal(const ImageGray &sourceIm
 	//int y = Extensions::getPercentage(percentage, sourceImage.height());
 	int blackPixels = 0;
 
-	auto end_ptr = sourceImage.data(0, y + 1);
-
-	for (auto pxl_ptr = sourceImage.data(0, y); pxl_ptr < end_ptr; pxl_ptr++) {
-		blackPixels += (int)(*pxl_ptr < thresholdValue);
+	for (int x = sourceImage.width() - 1; x >= 0; x--)
+	{
+		if (*(sourceImage.data(x, y)) > thresholdValue)
+		{
+			blackPixels++;
+		}
 	}
 
 	//bt->stop();
-	//std::cout << "Time for the countBlackPixelsPerRowHorizontal function: " << //bt->elapsedMicroSeconds() << " Microseconds (" << //bt->elapsedMilliSeconds() << "ms)" << std::endl;
+	//std::cout << "Time for the checkPixelsPerLineHorizontal function: " << //bt->elapsedMicroSeconds() << " Microseconds (" << //bt->elapsedMilliSeconds() << "ms)" << std::endl;
 
 	//return blackPixels;
 	//return (int)(blackPixels / (double)(sourceImage.width()) * 100);
@@ -86,7 +88,7 @@ double CheckPatterns::countBlackPixelsPerRowHorizontal(const ImageGray &sourceIm
 * @return
 */
 
-double CheckPatterns::countBlackPixelsPerLineVertical(const ImageGray &sourceImage, int percentage)
+double CheckPatterns::checkPixelsPerLineVertical(const ImageGray &sourceImage, int percentage)
 {
 	//bt->reset();
 	//bt->start();
@@ -104,15 +106,16 @@ double CheckPatterns::countBlackPixelsPerLineVertical(const ImageGray &sourceIma
 	int x = Extensions::getValueFromPercentage(sourceImage.width(), percentage);
 	int blackPixels = 0;
 
-	auto end_ptr = sourceImage.data(x, sourceImage.height());
-
-	for (auto pxl_ptr = sourceImage.data(x, 0); pxl_ptr < end_ptr; pxl_ptr += sourceImage.width())
+	for (int y = sourceImage.height() - 1; y >= 0; y--)
 	{
-		blackPixels += (int)(*pxl_ptr < thresholdValue);
+		if (*(sourceImage.data(x, y)) > thresholdValue)
+		{
+			blackPixels++;
+		}
 	}
 
 	//bt->stop();
-	//std::cout << "Time for the countBlackPixelsPerLineVertical function: " << //bt->elapsedMicroSeconds() << " Microseconds (" << //bt->elapsedMilliSeconds() << "ms)" << std::endl;
+	//std::cout << "Time for the checkPixelsPerLineVertical function: " << //bt->elapsedMicroSeconds() << " Microseconds (" << //bt->elapsedMilliSeconds() << "ms)" << std::endl;
 
 	//return blackPixels;
 	//return (int)(blackPixels / (double)(sourceImage.height()) * 100);
@@ -122,7 +125,7 @@ double CheckPatterns::countBlackPixelsPerLineVertical(const ImageGray &sourceIma
 // =======================================================================================
 
 /**
-* countBlackWhiteTransisitionHorizontal will look for transisiton in an ImageGray on the horizontal axis. These transitions are made from
+* checkBlackWhiteTransisitionHorizontal will look for transisiton in an ImageGray on the horizontal axis. These transitions are made from
 * black to white or white to black. If a transisition is detected a counter will be increased.
 *
 * @param  sourceImage
@@ -130,7 +133,7 @@ double CheckPatterns::countBlackPixelsPerLineVertical(const ImageGray &sourceIma
 * @return
 */
 
-double CheckPatterns::countBlackWhiteTransisitionHorizontal(const ImageGray &sourceImage, int percentage)
+double CheckPatterns::checkBlackWhiteTransisitionHorizontal(const ImageGray &sourceImage, int percentage)
 {
 	//bt->reset();
 	//bt->start();
@@ -140,16 +143,27 @@ double CheckPatterns::countBlackWhiteTransisitionHorizontal(const ImageGray &sou
 	int pixelCounter = 0;
 	// set oldpixel to 1 because white is 1 and every ImageGray starts with white
 	int oldPixel = 1;
+	char currentPixel = 0;
 
-	auto end_ptr = sourceImage.data(0, y + 1);
 
-	bool oldpixel = 1;
+	for (int x = sourceImage.width() - 1; x >= 0; x--)
+	{
 
-	for (auto pxl_ptr = sourceImage.data(0, y); pxl_ptr < end_ptr; pxl_ptr++) {
-		bool currentPixel = (*pxl_ptr > thresholdValue);
+		if (*(sourceImage.data(x, y)) > thresholdValue)
+		{
 
-		pixelCounter += (int)(currentPixel != oldPixel);
-		oldPixel = currentPixel;
+			currentPixel = 1.0;
+		}
+		else
+		{
+			currentPixel = 0.0;
+		}
+
+		if (currentPixel != oldPixel)
+		{
+			pixelCounter++;
+			oldPixel = currentPixel;
+		}
 	}
 
 	//bt->stop();
@@ -167,24 +181,32 @@ double CheckPatterns::countBlackWhiteTransisitionHorizontal(const ImageGray &sou
 * @return
 */
 
-double CheckPatterns::countBlackWhiteTransisitionVertical(const ImageGray &sourceImage, int percentage)
+double CheckPatterns::checkBlackWhiteTransisitionVertical(const ImageGray &sourceImage, int percentage)
 {
 	//bt->reset();
 	//bt->start();
 	int x = Extensions::getValueFromPercentage(sourceImage.width(), percentage);
 	int pixelCounter = 0;
+	char currentPixel = 0;
 	// set oldpixel to 1 because white is 1 and every ImageGray starts with white
 	int oldPixel = 1;
 
-	auto end_ptr = sourceImage.data(x, sourceImage.height());
+	for (int y = sourceImage.height() - 1; y >= 0; y--)
+	{
+		if (*(sourceImage.data(x, y)) > thresholdValue)
+		{
+			currentPixel = 1;
+		}
+		else
+		{
+			currentPixel = 0;
+		}
 
-	bool oldpixel = 1;
-
-	for (auto pxl_ptr = sourceImage.data(x, 0); pxl_ptr < end_ptr; pxl_ptr += sourceImage.width()) {
-		bool currentPixel = (*pxl_ptr > thresholdValue);
-
-		pixelCounter += (int)(currentPixel != oldPixel);
-		oldPixel = currentPixel;
+		if (currentPixel != oldPixel)
+		{
+			pixelCounter++;
+			oldPixel = currentPixel;
+		}
 	}
 
 	//bt->stop();
@@ -224,19 +246,18 @@ double CheckPatterns::checkSymmetryHorizontal(const ImageGray &sourceImage, bool
 	}
 	else
 	{
-		for (int y = 0; y < sourceImage.height(); y++)
+		for (int y = sourceImage.height(); y >= 0; y--)
 		{
-			auto left_ptr = sourceImage.data(0, y);
-
-			for (int offset = sourceImage.width() - 1; offset > 0; offset -= 2)
+			for (int x = sourceImage.width(); x >= (sourceImage.width() / 2); x--)
 			{
-				bool leftBlack = *left_ptr < thresholdValue;
-				bool rightBlack = *(left_ptr + offset) < thresholdValue;
-				//numberOfBlackPixels += leftBlack;
-				bool bothBlack = leftBlack == rightBlack;
-				symmetricBlackPixels += (int)bothBlack;
-
-				left_ptr++;
+				if (*(sourceImage.data(x, y)) < thresholdValue)
+				{
+					numberOfBlackPixels++;
+					if (*(sourceImage.data(sourceImage.width() - x, y)) < thresholdValue)
+					{
+						symmetricBlackPixels++;
+					}
+				}
 			}
 		}
 	}
@@ -244,7 +265,7 @@ double CheckPatterns::checkSymmetryHorizontal(const ImageGray &sourceImage, bool
 	//bt->stop();
 	//std::cout << "Time for the checkSymmetryHorizontal function: " << //bt->elapsedMicroSeconds() << " Microseconds (" << //bt->elapsedMilliSeconds() << "ms)" << std::endl;
 	//return (int)percentageSymmetric;
-	return Extensions::getWeightFromPercentage(Extensions::getPercentage(symmetricBlackPixels, sourceImage.size()));
+	return Extensions::getWeightFromPercentage(Extensions::getPercentage(symmetricBlackPixels, numberOfBlackPixels));
 }
 
 double CheckPatterns::checkSymmetryVertical(const ImageGray &sourceImage, bool boundingBox)
@@ -276,19 +297,18 @@ double CheckPatterns::checkSymmetryVertical(const ImageGray &sourceImage, bool b
 	}
 	else
 	{
-		for (int x = 0; x < sourceImage.width(); x++)
+		for (int y = sourceImage.height(); y >= (sourceImage.height() / 2); y--)
 		{
-			auto top_ptr = sourceImage.data(x, 0);
-
-			for (int offset = sourceImage.height() - 1; offset > 0; offset -= 2)
+			for (int x = sourceImage.width(); x >= 0; x--)
 			{
-				bool topBlack = *top_ptr < thresholdValue;
-				bool bottomBlack = *(top_ptr + offset) < thresholdValue;
-				//numberOfBlackPixels += topBlack;
-				bool bothBlack = topBlack == bottomBlack;
-				symmetricBlackPixels += (int)bothBlack;
-
-				top_ptr += sourceImage.width();
+				if (*(sourceImage.data(x, y)) < thresholdValue)
+				{
+					numberOfBlackPixels++;
+					if (*(sourceImage.data(x, sourceImage.height() - y)) < thresholdValue)
+					{
+						symmetricBlackPixels++;
+					}
+				}
 			}
 		}
 	}
@@ -296,7 +316,7 @@ double CheckPatterns::checkSymmetryVertical(const ImageGray &sourceImage, bool b
 	//bt->stop();
 	//std::cout << "Time for the checkSymmetryVertical function: " << //bt->elapsedMicroSeconds() << " Microseconds (" << //bt->elapsedMilliSeconds() << "ms)" << std::endl;
 	//return (int)percentageSymmetric;
-	return Extensions::getWeightFromPercentage(Extensions::getPercentage(symmetricBlackPixels, sourceImage.size()));
+	return Extensions::getWeightFromPercentage(Extensions::getPercentage(symmetricBlackPixels, numberOfBlackPixels));
 }
 
 int CheckPatterns::findLeftBlackPixel(const ImageGray &sourceImage)
