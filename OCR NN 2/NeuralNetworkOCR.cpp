@@ -4,7 +4,7 @@
 
 /*
 NeuralNetworkOCR::NeuralNetworkOCR() 
-: neural_network(std::vector<unsigned int>{58, 60, 36})
+: neural_network(std::vector<unsigned int>{58, 80, 36})
 {
 }
 
@@ -57,7 +57,7 @@ std::vector<double> NeuralNetworkOCR::img_to_input(const ImageGray & img)
 		patterns.countBlackPixelsPerRowHorizontal(img, 60),
 		patterns.countBlackPixelsPerRowHorizontal(img, 75),
 		patterns.countBlackPixelsPerRowHorizontal(img, 90),
-		
+
 		patterns.countBlackPixelsPerLineVertical(img, 10),
 		patterns.countBlackPixelsPerLineVertical(img, 25),
 		patterns.countBlackPixelsPerLineVertical(img, 40),
@@ -68,7 +68,7 @@ std::vector<double> NeuralNetworkOCR::img_to_input(const ImageGray & img)
 
 		patterns.checkSymmetryVertical(img),
 		patterns.checkSymmetryHorizontal(img),
-		
+
 		patterns.countBlackWhiteTransisitionHorizontal(img, 10),
 		patterns.countBlackWhiteTransisitionHorizontal(img, 25),
 		patterns.countBlackWhiteTransisitionHorizontal(img, 40),
@@ -76,7 +76,7 @@ std::vector<double> NeuralNetworkOCR::img_to_input(const ImageGray & img)
 		patterns.countBlackWhiteTransisitionHorizontal(img, 60),
 		patterns.countBlackWhiteTransisitionHorizontal(img, 75),
 		patterns.countBlackWhiteTransisitionHorizontal(img, 90),
-		
+
 		patterns.countBlackWhiteTransisitionVertical(img, 10),
 		patterns.countBlackWhiteTransisitionVertical(img, 25),
 		patterns.countBlackWhiteTransisitionVertical(img, 40),
@@ -116,6 +116,13 @@ std::vector<double> NeuralNetworkOCR::img_to_input(const ImageGray & img)
 		patterns.firstEdgeLocationBottom(img, 60),
 		patterns.firstEdgeLocationBottom(img, 75),
 		patterns.firstEdgeLocationBottom(img, 90),
+<<<<<<< HEAD
+=======
+
+		/*patterns.percentageBlack(img, 30, 30, 45, 45),
+		patterns.percentageBlack(img, 40, 40, 60, 60),
+		patterns.percentageBlack(img, 55, 55, 70, 70),*/
+>>>>>>> ab859ada9074fe4d0baaa728331de3378d8a8be0
 	};
 
 	return input;

@@ -100,5 +100,7 @@ public:
 	double firstEdgeLocationRight(const ImageGray & sourceImage, int percentage);
 	double firstEdgeLocationTop(const ImageGray & sourceImage, int percentage);
 	double firstEdgeLocationBottom(const ImageGray & sourceImage, int percentage);
+
+	double percentageBlack(const ImageGray & sourceImage, int xleft, int ytop, int xright, int ybottom);
 };
 

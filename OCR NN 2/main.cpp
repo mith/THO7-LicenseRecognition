@@ -24,27 +24,27 @@ int main(int argc, const char* argv[])
 	/*
 	ImageList img_list(img_dir);
 
+<<<<<<< HEAD
 	std::cout << "loaded up" << std::endl;
 
 	//NeuralNetworkOCR ocr("./Export/OCR.txt");
+=======
+	//NeuralNetworkOCR ocr("OCR.txt");
+>>>>>>> ab859ada9074fe4d0baaa728331de3378d8a8be0
 	NeuralNetworkOCR ocr;
 
 	BaseTimer tmr;
 	tmr.start();
-	ocr.train(img_list, 5 * 1000 * 1000);
+	ocr.train(img_list, 1 * 1000 * 1000);
 	tmr.stop();
 
-	//ocr.export("./Export/OCR.txt");
-
-	// TODO: firstEdgeLocation{Left,Right,Top,Bottom}
-	// TODO: percentageBlack(x, y, x2, y3)
-	
+	ocr.export("OCR.txt");
 
 	std::cout << "training took: " << tmr.elapsedSeconds() << " seconds." << std::endl;
 
 	int success = 0;
 
-	for (int pass = 0; pass < 100; pass++) {
+	for (int pass = 0; pass < 1000; pass++) {
 		auto img_data = img_list.getRandom();
 		
 
@@ -63,9 +63,14 @@ int main(int argc, const char* argv[])
 
 			std::cout << "------------------------" << std::endl;
 		}
+<<<<<<< HEAD
 	} 
 	*/
 	std::cout << "Ending Program";
+=======
+	}
+	std::cout << "Times success out of 1000 passes: " << success;
+>>>>>>> ab859ada9074fe4d0baaa728331de3378d8a8be0
 	std::cin.ignore();
 	return 0;
 }
