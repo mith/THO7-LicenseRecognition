@@ -173,6 +173,8 @@
     <ClInclude Include="NeuralNetwork.h" />
     <ClInclude Include="NeuralNetworkOCR.h" />
     <ClInclude Include="NeuronLayer.h" />
+    <ClInclude Include="TrainData.h" />
+    <ClInclude Include="TrainingsManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CheckPatterns.cpp" />
@@ -181,6 +183,8 @@
     <ClCompile Include="NeuralNetwork.cpp" />
     <ClCompile Include="NeuralNetworkOCR.cpp" />
     <ClCompile Include="NeuronLayer.cpp" />
+    <ClCompile Include="TrainData.cpp" />
+    <ClCompile Include="TrainingsManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

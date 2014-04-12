@@ -1,7 +1,8 @@
 #include <vector>
 #include "basetimer.h"
-#include "NeuralNetworkOCR.h"
-#include "ImageList.h"
+//#include "NeuralNetworkOCR.h"
+//#include "ImageList.h"
+#include "TrainingsManager.h"
 
 std::ostream& operator<< (std::ostream& stream, const std::vector<double>& fs)
 {
@@ -18,9 +19,12 @@ std::ostream& operator<< (std::ostream& stream, const std::vector<double>& fs)
 
 int main(int argc, const char* argv[])
 {
-	std::string img_dir = argv[1];
-
+	std::string img_dir(argc > 1 ? argv[1] : "Images3600");
+	TrainingsManager t(img_dir);
+	/*
 	ImageList img_list(img_dir);
+
+	std::cout << "loaded up" << std::endl;
 
 	//NeuralNetworkOCR ocr("./Export/OCR.txt");
 	NeuralNetworkOCR ocr;
@@ -59,8 +63,9 @@ int main(int argc, const char* argv[])
 
 			std::cout << "------------------------" << std::endl;
 		}
-	}
-	std::cout << "Times success out of 10 passes: " << success;
+	} 
+	*/
+	std::cout << "Ending Program";
 	std::cin.ignore();
 	return 0;
 }

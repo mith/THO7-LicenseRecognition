@@ -7,6 +7,7 @@
 #include "CheckPatterns.h"
 #include "ImageList.h"
 
+/*
 using namespace ImageLib;
 
 class NeuralNetworkOCR
@@ -32,3 +33,4 @@ public:
 	void export(std::string filename) const;
 };
 
+ */

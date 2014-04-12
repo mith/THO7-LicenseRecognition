@@ -2,14 +2,14 @@
 #include "CheckPatterns.h"
 #include "ImageList.h"
 
-
+/*
 NeuralNetworkOCR::NeuralNetworkOCR() 
 : neural_network(std::vector<unsigned int>{58, 60, 36})
 {
 }
 
 NeuralNetworkOCR::NeuralNetworkOCR(const std::string & importFile)
-: neural_network(importFile)
+: neural_network(std::vector<unsigned int>{58, 60, 36}, importFile)
 {
 
 }
@@ -116,8 +116,6 @@ std::vector<double> NeuralNetworkOCR::img_to_input(const ImageGray & img)
 		patterns.firstEdgeLocationBottom(img, 60),
 		patterns.firstEdgeLocationBottom(img, 75),
 		patterns.firstEdgeLocationBottom(img, 90),
-
-
 	};
 
 	return input;
@@ -143,7 +141,7 @@ std::vector<double> NeuralNetworkOCR::char_to_output(char c)
 {
 	std::vector<double> output(36, -1.0f);
 
-	if (c > 47 && c < 58) {
+	if (c >= 47 && c < 58) {
 		output[c - 48] = 1.0; // Numbers 0-9 in indices 0-9
 	}
 	else if (c > 64 && c < 91) {
@@ -158,4 +156,4 @@ std::vector<double> NeuralNetworkOCR::char_to_output(char c)
 void NeuralNetworkOCR::export(std::string filename) const
 {
 	neural_network.exportNetwork(filename);
-}
+} */

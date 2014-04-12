@@ -39,6 +39,12 @@
     <ClInclude Include="NeuralNetworkOCR.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="TrainingsManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TrainData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="NeuralNetwork.cpp">
@@ -57,6 +63,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="NeuralNetworkOCR.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TrainingsManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TrainData.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
