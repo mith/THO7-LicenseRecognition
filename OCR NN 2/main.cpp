@@ -67,10 +67,10 @@ int main(int argc, const char* argv[])
 	} 
 	*/
 	std::cout << "Ending Program";
-=======
-	}
-	std::cout << "Times success out of 1000 passes: " << success;
->>>>>>> ab859ada9074fe4d0baaa728331de3378d8a8be0
+//=======
+//	}
+//	std::cout << "Times success out of 1000 passes: " << success;
+//>>>>>>> ab859ada9074fe4d0baaa728331de3378d8a8be0
 	std::cin.ignore();
 	return 0;
 }

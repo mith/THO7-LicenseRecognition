@@ -121,8 +121,8 @@ std::vector<double> NeuralNetworkOCR::img_to_input(const ImageGray & img)
 
 		/*patterns.percentageBlack(img, 30, 30, 45, 45),
 		patterns.percentageBlack(img, 40, 40, 60, 60),
-		patterns.percentageBlack(img, 55, 55, 70, 70),*/
->>>>>>> ab859ada9074fe4d0baaa728331de3378d8a8be0
+		patterns.percentageBlack(img, 55, 55, 70, 70),
+//>>>>>>> ab859ada9074fe4d0baaa728331de3378d8a8be0 
 	};
 
 	return input;
