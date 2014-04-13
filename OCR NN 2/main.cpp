@@ -20,9 +20,12 @@ std::ostream& operator<< (std::ostream& stream, const std::vector<double>& fs)
 int main(int argc, const char* argv[])
 {
 	std::string img_dir(argc > 1 ? argv[1] : "Images3600");
-	TrainingsManager t(img_dir);
-	t.setPasses(2000);
-	t.run();
+	TrainData td(img_dir);
+
+	for (unsigned int i = 0; i < 10; i++) {
+		TrainingsManager t(td);
+		t.run();
+	}
 	/*
 	ImageList img_list(img_dir);
 

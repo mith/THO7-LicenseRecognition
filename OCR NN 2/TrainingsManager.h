@@ -33,10 +33,10 @@ private:
 	//When its true debug data will be printed
 	void runPasses(bool print = false);
 public:
-	//Constructor taking the directory of the test data
-	TrainingsManager(std::string img_dir);
-	//Constructor taking the directory of the test data, and the import file
-	TrainingsManager(std::string img_dir, std::string import);
+	//Constructor taking a TrainData object from which to train the NN
+	TrainingsManager(TrainData& td);
+	//Constructor taking a TrainData object from which to train the NN, and the import file
+	TrainingsManager(TrainData& td, std::string import);
 	//Method to change to total number of passes
 	void setPasses(unsigned int newPasses);
 	//Method to change the target succes rate

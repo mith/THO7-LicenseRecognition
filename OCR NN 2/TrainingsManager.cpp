@@ -1,6 +1,6 @@
 /* Created By Stefan Hulspas
  * Using some of the code from Simon Voordouw
- * 04-13-2014 version 0.2
+ * 04-13-2014 version 0.21
  * Cleaned up code
  * Added Comments
  * Added Functionallity for final product
@@ -9,11 +9,11 @@
 #include "TrainingsManager.h"
 
 
-TrainingsManager::TrainingsManager(std::string img_dir) : trainData(img_dir), net(trainData.getTopology()), passes(1000), targetSuccesRate(0.9)
+TrainingsManager::TrainingsManager(TrainData& td) : trainData(td), net(trainData.getTopology()), passes(1000), targetSuccesRate(0.9)
 {
 }
 
-TrainingsManager::TrainingsManager(std::string img_dir, std::string import) : trainData(img_dir), net(trainData.getTopology(), import), isTrained(true), passes(1000)
+TrainingsManager::TrainingsManager(TrainData& td, std::string import) : trainData(td), net(trainData.getTopology(), import), isTrained(true), passes(1000)
 {
 }
 
