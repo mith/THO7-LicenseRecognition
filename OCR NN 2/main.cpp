@@ -21,16 +21,15 @@ int main(int argc, const char* argv[])
 {
 	std::string img_dir(argc > 1 ? argv[1] : "Images3600");
 	TrainingsManager t(img_dir);
+	t.setPasses(2000);
+	t.run();
 	/*
 	ImageList img_list(img_dir);
 
-<<<<<<< HEAD
 	std::cout << "loaded up" << std::endl;
 
 	//NeuralNetworkOCR ocr("./Export/OCR.txt");
-=======
 	//NeuralNetworkOCR ocr("OCR.txt");
->>>>>>> ab859ada9074fe4d0baaa728331de3378d8a8be0
 	NeuralNetworkOCR ocr;
 
 	BaseTimer tmr;
@@ -63,14 +62,11 @@ int main(int argc, const char* argv[])
 
 			std::cout << "------------------------" << std::endl;
 		}
-<<<<<<< HEAD
 	} 
+
+	std::cout << "Times success out of 1000 passes: " << success;
 	*/
 	std::cout << "Ending Program";
-//=======
-//	}
-//	std::cout << "Times success out of 1000 passes: " << success;
-//>>>>>>> ab859ada9074fe4d0baaa728331de3378d8a8be0
 	std::cin.ignore();
 	return 0;
 }

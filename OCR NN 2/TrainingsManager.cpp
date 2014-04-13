@@ -1,18 +1,23 @@
+/* Created By Stefan Hulspas
+ * Using some of the code from Simon Voordouw
+ * 04-13-2014 version 0.2
+ * Cleaned up code
+ * Added Comments
+ * Added Functionallity for final product
+ */
+
 #include "TrainingsManager.h"
 
 
-TrainingsManager::TrainingsManager(std::string img_dir) : trainData(img_dir), topology(trainData.getTopology()), netOCR(topology)
+TrainingsManager::TrainingsManager(std::string img_dir) : trainData(img_dir), net(trainData.getTopology()), passes(1000), targetSuccesRate(0.9)
 {
-	run();
 }
 
-TrainingsManager::TrainingsManager(std::string img_dir, std::string import) : trainData(img_dir), topology(trainData.getTopology()), netOCR(topology, import), isTrained(true)
+TrainingsManager::TrainingsManager(std::string img_dir, std::string import) : trainData(img_dir), net(trainData.getTopology(), import), isTrained(true), passes(1000)
 {
-	run();
 }
 
-void TrainingsManager::run() {
-	unsigned int passes = 1000;
+void TrainingsManager::run(bool print) {
 	double succes = 0;
 	unsigned int i = 0;
 	std::cout << "One session consists off: " << passes << " iterations" << std::endl;
@@ -21,29 +26,36 @@ void TrainingsManager::run() {
 		std::cout << "Starting the training" << std::endl;
 		while (true) {
 			i++;
-			runOCRPasses(passes);
+			runPasses();
 			succes = (double)correctAnswers / (double)passes;
-			std::cout << "Session " << i << " had a succesrate of: " << succes << '%' << std::endl;
-			if (succes > 0.9) break;
+			if (print)std::cout << "Session " << i << " had a succesrate of: " << succes << '%' << std::endl;
+			else std::cout << ".";
+			if (succes > targetSuccesRate) break;
 		}
 	}
-
-	//show off
-	std::cout << "Running additional run to show off the results" << std::endl;
-	runOCRPasses(10, true);
+	std::cout << std::endl;
+	if (print) {
+		//show off
+		std::cout << "Running 10 additional runs with output to show off the results" << std::endl;
+		passes = 10;
+		runPasses(true);
+	}
+	else {
+		std::cout << "Training took " << i << " session of " << passes << " passes" << std::endl;
+		std::cout << "Final result rate was: " << succes << std::endl;
+	}
 }
 
-void TrainingsManager::runOCRPasses(unsigned int passes, bool print) {
+void TrainingsManager::runPasses(bool print) {
 	correctAnswers = 0;
 	for (unsigned int pass = 0; pass < passes; pass++) {
-		unsigned int id = (rand() * (int)(trainData.numImages() - 1) / RAND_MAX);
+		unsigned int testDataID = (rand() * (int)(trainData.testDataSize() - 1) / RAND_MAX);
 
-		auto input = trainData.img_to_input(trainData[id].image);
+		net.feedForward(trainData.getInput(testDataID));
 
-		netOCR.feedForward(input);
+		auto results = net.getOutput();
 
-		auto results = netOCR.getOutput();
-		auto targets = trainData.char_to_output(trainData[id].getChar());
+		auto targets = trainData.getTargetOutput(testDataID);
 
 		unsigned int highestR = 0;
 		unsigned int highestT = 0;
@@ -55,23 +67,34 @@ void TrainingsManager::runOCRPasses(unsigned int passes, bool print) {
 
 		if (highestR == highestT) correctAnswers++;
 
-		netOCR.backPropagate(targets);
+		net.backPropagate(targets);
 
 		if (print) {
-			char out = highestR < 10 ? '0' + highestR : 'A' + (highestR - 10);
-			std::cout << "target char: " << trainData[id].getChar() << "   id: " << highestT << std::endl;
-			std::cout << "output char: " << out << "   id: " << highestR << std::endl;
-			std::cout << "results: ";
-			for (int i = 0; i < results.size(); i++) {
-				std::cout << " " << results[i];
-			}
-			std::cout << std::endl <<"targets: ";
-			for (int i = 0; i < results.size(); i++) {
-				std::cout << " " << targets[i];
-			}
-			std::cout << "------------------------" << std::endl;
+			trainData.print(testDataID, results, highestR, targets, highestT);
 		}
 	}
+}
+
+void TrainingsManager::setPasses(unsigned int newPasses) {
+	passes = newPasses;
+}
+
+void TrainingsManager::setTargetSuccesRate(double newTargetSuccesRate) {
+	targetSuccesRate = newTargetSuccesRate;
+}
+
+unsigned int TrainingsManager::getRecentSucces() {
+	return (correctAnswers * 100) / passes;
+}
+
+unsigned int TrainingsManager::applyInputToNN(std::vector<double> input) {
+	net.feedForward(input);
+	auto results = net.getOutput();
+	unsigned int highestR;
+	for (unsigned int i = 1; i < results.size(); i++) {
+		if (results[i] > results[highestR]) highestR = i;
+	}
+	return highestR;
 }
 
 TrainingsManager::~TrainingsManager()

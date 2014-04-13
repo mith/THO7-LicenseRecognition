@@ -1,5 +1,12 @@
+/* Created By Stefan Hulspas
+* Using some of the code from Simon Voordouw
+* 04-13-2014 version 0.2
+* Cleaned up code
+* Added Comments
+* Added Functionallity for final product
+*/
 #include "TrainData.h"
-
+#include <iostream>
 
 TrainData::TrainData(std::string img_dir)
 {
@@ -39,14 +46,13 @@ const ImageData & TrainData::operator [] (unsigned int id) const
 	return images[id];
 }
 
-
 const ImageData & TrainData::getRandom() const
 {
 	int id = (rand() * (int)(images.size() - 1) / RAND_MAX);
 	return images[id];
 }
 
-size_t TrainData::numImages() const
+size_t TrainData::testDataSize() const
 {
 	return images.size();
 }
@@ -55,7 +61,14 @@ const std::vector<unsigned int> TrainData::getTopology() {
 	return{ 58, 60, 36 };
 }
 
-std::vector<double> TrainData::img_to_input(const ImageLib::ImageGray & img)
+std::vector<double> TrainData::getInput(unsigned int testDataID)
+{
+	const ImageLib::ImageGray & img = images[testDataID].image;
+
+	return getInputForImage(img);
+}
+
+std::vector<double> TrainData::getInputForImage(const ImageLib::ImageGray & img)
 {
 	std::vector<double> input{
 		patterns.countBlackPixelsPerRowHorizontal(img, 10),
@@ -123,14 +136,16 @@ std::vector<double> TrainData::img_to_input(const ImageLib::ImageGray & img)
 		patterns.firstEdgeLocationBottom(img, 50),
 		patterns.firstEdgeLocationBottom(img, 60),
 		patterns.firstEdgeLocationBottom(img, 75),
-		patterns.firstEdgeLocationBottom(img, 90)};
+		patterns.firstEdgeLocationBottom(img, 90) };
 
 	return input;
 }
 
-std::vector<double> TrainData::char_to_output(char c)
+std::vector<double> TrainData::getTargetOutput(unsigned int testDataID)
 {
 	std::vector<double> output(36, -1.0f);
+
+	unsigned char c = images[testDataID].getChar();
 
 	if (c >= 47 && c < 58) {
 		output[c - 48] = 1.0; // Numbers 0-9 in indices 0-9
@@ -142,4 +157,19 @@ std::vector<double> TrainData::char_to_output(char c)
 		output[c - 87] = 1.0;
 	}
 	return output;
+}
+
+void TrainData::print(unsigned int testDataID, std::vector<double> output, unsigned int highestR, std::vector<double> target, unsigned int highestT) {
+	char out = highestR < 10 ? '0' + highestR : 'A' + (highestR - 10);
+	std::cout << "target char: " << images[testDataID].getChar() << "   id: " << highestT << std::endl;
+	std::cout << "output char: " << out << "   id: " << highestR << std::endl;
+	std::cout << "results: ";
+	for (int i = 0; i < output.size(); i++) {
+		std::cout << " " << output[i];
+	}
+	std::cout << std::endl << "targets: ";
+	for (int i = 0; i < target.size(); i++) {
+		std::cout << " " << target[i];
+	}
+	std::cout << "------------------------" << std::endl;
 }

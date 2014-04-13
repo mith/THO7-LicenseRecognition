@@ -1,3 +1,11 @@
+/* Created By Stefan Hulspas
+ * Using some of the code from Simon Voordouw
+ * 04-13-2014 version 0.2
+ * Cleaned up code
+ * Added Comments
+ * Added Functionallity for final product
+ */
+
 #pragma once
 #include "NeuralNetwork.h"
 #include "TrainData.h"
@@ -5,16 +13,47 @@
 class TrainingsManager
 {
 private:
+	//Traindata set currently default is set to OCR trainData set
 	TrainData trainData;
-	std::vector<unsigned int> topology;
-	NeuralNetwork netOCR;
+	//The NN which will be used
+	NeuralNetwork net;
+	//Boolean to keep track of if the network is trained at the start or not
+	//Currently this is always set to true when an import file is presented
+	//isTrained should be set to false if import file could not be found
 	bool isTrained = false;
-	void run();
+	//Int to keep track of the correct answers in the last pass
 	unsigned int correctAnswers;
-	void runOCRPasses(unsigned int passes, bool print = false);
+	//Total passes from which the succes rate will be calculated
+	unsigned int passes;
+	//The target Succes Rate for which the training will go
+	//Default is set to 0.9
+	double targetSuccesRate;
+	//run the total passes 
+	//Boolean is ussually set to false
+	//When its true debug data will be printed
+	void runPasses(bool print = false);
 public:
+	//Constructor taking the directory of the test data
 	TrainingsManager(std::string img_dir);
+	//Constructor taking the directory of the test data, and the import file
 	TrainingsManager(std::string img_dir, std::string import);
+	//Method to change to total number of passes
+	void setPasses(unsigned int newPasses);
+	//Method to change the target succes rate
+	//so the accuracy of the NN can be changed
+	void setTargetSuccesRate(double newTargetSuccesRate);
+	//Method to return the recent succes
+	//Might not be needed in end product
+	unsigned int getRecentSucces();
+	//Method to manually input data and get a result
+	unsigned int applyInputToNN(std::vector<double> input);
+	//The trainings run 
+	//Boolean is ussually set to false
+	//When its false each session will print a '.'
+	//And how many sessions it took to train
+	//When its true each session and its succesrate will be printed
+	//Along with 10 additional runs with debug data
+	void run(bool print = false);
 	~TrainingsManager();
 };
 
