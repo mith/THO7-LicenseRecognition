@@ -9,11 +9,11 @@
 #include "TrainingsManager.h"
 
 
-TrainingsManager::TrainingsManager(TrainData& td) : trainData(td), net(trainData.getTopology()), passes(1000), targetSuccesRate(0.9)
+TrainingsManager::TrainingsManager(TrainData& td) : trainData(td), net(trainData.getTopology()), passes(1000), targetSuccesRate(0.9), mistakes(trainData.getNumOutputs(), std::vector<unsigned int>(trainData.getNumOutputs(), 0))
 {
 }
 
-TrainingsManager::TrainingsManager(TrainData& td, std::string import) : trainData(td), net(trainData.getTopology(), import), isTrained(true), passes(1000)
+TrainingsManager::TrainingsManager(TrainData& td, std::string import) : trainData(td), net(trainData.getTopology(), import), isTrained(true), passes(1000), targetSuccesRate(0.9), mistakes(trainData.getNumOutputs(), std::vector<unsigned int>(trainData.getNumOutputs(), 0))
 {
 }
 
@@ -48,6 +48,7 @@ void TrainingsManager::run(bool print) {
 
 void TrainingsManager::runPasses(bool print) {
 	correctAnswers = 0;
+	resetMistakes();
 	for (unsigned int pass = 0; pass < passes; pass++) {
 		unsigned int testDataID = (rand() * (int)(trainData.testDataSize() - 1) / RAND_MAX);
 
@@ -66,6 +67,9 @@ void TrainingsManager::runPasses(bool print) {
 		}
 
 		if (highestR == highestT) correctAnswers++;
+		else {
+			mistakes[highestT][highestR]++;
+		}
 
 		net.backPropagate(targets);
 
@@ -85,6 +89,18 @@ void TrainingsManager::setTargetSuccesRate(double newTargetSuccesRate) {
 
 unsigned int TrainingsManager::getRecentSucces() {
 	return (correctAnswers * 100) / passes;
+}
+
+std::vector<std::vector<unsigned int>> TrainingsManager::getRecentMistakes() {
+	return mistakes;
+}
+
+void TrainingsManager::resetMistakes() {
+	for (unsigned int r = 0; r < mistakes.size(); r++) {
+		for (unsigned int t = 0; t < mistakes[r].size(); t++) {
+			mistakes[r][t] = 0;
+		}
+	}
 }
 
 unsigned int TrainingsManager::applyInputToNN(std::vector<double> input) {

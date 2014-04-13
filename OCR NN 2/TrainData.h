@@ -13,6 +13,10 @@
 #include <ImageLib.h>
 #include "CheckPatterns.h"
 
+#define INPUT 58
+#define HIDDEN 60
+#define OUTPUT 36
+
 struct ImageData
 {
 	std::string filename;
@@ -54,6 +58,8 @@ public:
 	std::vector<double> getInputForImage(const ImageLib::ImageGray & image);
 	//Method to create the correct output for the given testdata ID
 	std::vector<double> getTargetOutput(unsigned int i);
+	//Get number of outputs
+	unsigned int getNumOutputs();
 	//Method to print data from the NN
 	//Because the trainer doesn't know what hes putting in the NN or whats supposed to come out
 	void print(unsigned int testDataID, std::vector<double> output, unsigned int highestR, std::vector<double> target, unsigned int highestT);

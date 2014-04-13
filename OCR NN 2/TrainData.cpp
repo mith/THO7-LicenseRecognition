@@ -58,7 +58,7 @@ size_t TrainData::testDataSize() const
 }
 
 const std::vector<unsigned int> TrainData::getTopology() {
-	return{ 58, 60, 36 };
+	return{ INPUT, HIDDEN, OUTPUT };
 }
 
 std::vector<double> TrainData::getInput(unsigned int testDataID)
@@ -157,6 +157,10 @@ std::vector<double> TrainData::getTargetOutput(unsigned int testDataID)
 		output[c - 87] = 1.0;
 	}
 	return output;
+}
+
+unsigned int TrainData::getNumOutputs() {
+	return OUTPUT;
 }
 
 void TrainData::print(unsigned int testDataID, std::vector<double> output, unsigned int highestR, std::vector<double> target, unsigned int highestT) {
