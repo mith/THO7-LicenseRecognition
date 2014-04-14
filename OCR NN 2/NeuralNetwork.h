@@ -8,7 +8,7 @@ class NeuralNetwork
 {
 public:
 	NeuralNetwork(const std::vector<unsigned int> topology);
-	NeuralNetwork(const std::vector<unsigned int> topology, const std::string &importFile);
+	NeuralNetwork(const std::string &importFile);
 	~NeuralNetwork();
 	void feedForward(const std::vector<double> &input);
 	void backPropagate(const std::vector<double> &target);
