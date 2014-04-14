@@ -18,7 +18,7 @@ NeuralNetwork::NeuralNetwork(const std::vector<unsigned int> topology)
 }
 // Author: Kevin Bosman
 // Co-author: Harmen Klink
-NeuralNetwork::NeuralNetwork(const std::string &importFile) {
+NeuralNetwork::NeuralNetwork(const std::vector<unsigned int> topo, const std::string &importFile) {
 	std::ifstream importDataFile;
 	importDataFile.open(importFile.c_str());
 	std::string line;

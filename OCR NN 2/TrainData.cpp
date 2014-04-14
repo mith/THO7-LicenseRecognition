@@ -72,19 +72,23 @@ std::vector<double> TrainData::getInputForImage(const ImageLib::ImageGray & img)
 {
 	std::vector<double> input{
 		patterns.countBlackPixelsPerRowHorizontal(img, 10),
-		patterns.countBlackPixelsPerRowHorizontal(img, 25),
+		patterns.countBlackPixelsPerRowHorizontal(img, 20),
+		patterns.countBlackPixelsPerRowHorizontal(img, 30),
 		patterns.countBlackPixelsPerRowHorizontal(img, 40),
 		patterns.countBlackPixelsPerRowHorizontal(img, 50),
 		patterns.countBlackPixelsPerRowHorizontal(img, 60),
-		patterns.countBlackPixelsPerRowHorizontal(img, 75),
+		patterns.countBlackPixelsPerRowHorizontal(img, 70),
+		patterns.countBlackPixelsPerRowHorizontal(img, 80),
 		patterns.countBlackPixelsPerRowHorizontal(img, 90),
 
 		patterns.countBlackPixelsPerLineVertical(img, 10),
-		patterns.countBlackPixelsPerLineVertical(img, 25),
+		patterns.countBlackPixelsPerLineVertical(img, 20),
+		patterns.countBlackPixelsPerLineVertical(img, 30),
 		patterns.countBlackPixelsPerLineVertical(img, 40),
 		patterns.countBlackPixelsPerLineVertical(img, 50),
 		patterns.countBlackPixelsPerLineVertical(img, 60),
-		patterns.countBlackPixelsPerLineVertical(img, 75),
+		patterns.countBlackPixelsPerLineVertical(img, 70),
+		patterns.countBlackPixelsPerLineVertical(img, 80),
 		patterns.countBlackPixelsPerLineVertical(img, 90),
 
 		patterns.checkSymmetryVertical(img),
@@ -156,6 +160,9 @@ std::vector<double> TrainData::getTargetOutput(unsigned int testDataID)
 	else if (c > 96 && c < 123) {
 		output[c - 87] = 1.0;
 	}
+	else if (c == '-') {
+		output[36];
+	}
 	return output;
 }
 
@@ -165,6 +172,7 @@ unsigned int TrainData::getNumOutputs() {
 
 void TrainData::print(unsigned int testDataID, std::vector<double> output, unsigned int highestR, std::vector<double> target, unsigned int highestT) {
 	char out = highestR < 10 ? '0' + highestR : 'A' + (highestR - 10);
+	if (out > 'Z') out = '-';
 	std::cout << "target char: " << images[testDataID].getChar() << "   id: " << highestT << std::endl;
 	std::cout << "output char: " << out << "   id: " << highestR << std::endl;
 	std::cout << "results: ";

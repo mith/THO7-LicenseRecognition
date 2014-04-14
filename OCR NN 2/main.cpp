@@ -20,22 +20,47 @@ std::ostream& operator<< (std::ostream& stream, const std::vector<double>& fs)
 
 int main(int argc, const char* argv[])
 {
-	std::string img_dir(argc > 1 ? argv[1] : "Images3600");
+	std::string img_dir(argc > 1 ? argv[1] : "ImagesNewDejshejs");
 	TrainData td(img_dir);
+	std::vector<std::vector<unsigned int>>  totalMistakes(td.getNumOutputs(), std::vector<unsigned int>(td.getNumOutputs(), 0));
 	for (unsigned int i = 0; i < 10; i++) {
-		TrainingsManager t(td, "./Export/NetExport1.txt");
-		t.setTargetSuccesRate(0.999);
+		TrainingsManager t(td); //"./Export/NetExportTest1.txt"
+		t.setTargetSuccesRate(0.99);
 		t.run();
 		t.saveWeights(("./Export/NetExport" + (std::string)(i + ".txt")));
 		std::cout << "Last run had the following mistakes: " << std::endl;
 		auto mistakes = t.getRecentMistakes();
 		for (unsigned int t = 0; t < mistakes.size(); t++) {
 			char target = t < 10 ? '0' + t : 'A' + (t - 10);
+			if (target > 'Z') target = '-';
 			for (unsigned int r = 0; r < mistakes.size(); r++) {
 				if (!(mistakes[t][r] == 0)) {
+					totalMistakes[t][r] += mistakes[t][r];
 					char result = r < 10 ? '0' + r : 'A' + (r - 10);
+					if (result > 'Z') result = '-';
 					std::cout << target << " has been confused with " << result << " " << mistakes[t][r] << " times" << std::endl;
 				}
+			}
+		}
+	}
+	/*
+	ImageLib::ImageGray img2("./ImagesNewDejshejs/28.jpg");
+	ImageLib::ImageGray imgstreep("./ImagesNewDejshejs/-.jpg");
+	std::vector<double> test2 = td.getInputForImage(img2);
+	std::vector<double> teststreep = td.getInputForImage(imgstreep);
+	for (int i = 0; i < test2.size(); i++) {
+		std::cout << "input " << i << std::endl;
+		std::cout << "2: " << test2[i] << "   -: " << teststreep[i] << std::endl;
+	} */
+	std::cout << std::endl << "------------------------" << std::endl;
+	for (unsigned int t = 0; t < totalMistakes.size(); t++) {
+		char target = t < 10 ? '0' + t : 'A' + (t - 10);
+		if (target > 'Z') target = '-';
+		for (unsigned int r = 0; r < totalMistakes.size(); r++) {
+			if ((totalMistakes[t][r] > 1 )) {
+				char result = r < 10 ? '0' + r : 'A' + (r - 10);
+				if (result > 'Z') result = '-';
+				std::cout << target << " has been confused with " << result << " " << totalMistakes[t][r] << " times" << std::endl;
 			}
 		}
 	}

@@ -13,9 +13,9 @@
 #include <ImageLib.h>
 #include "CheckPatterns.h"
 
-#define INPUT 58
+#define INPUT 62
 #define HIDDEN 60
-#define OUTPUT 36
+#define OUTPUT 37
 
 struct ImageData
 {
