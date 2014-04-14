@@ -157,10 +157,10 @@ std::vector<double> TrainData::getTargetOutput(unsigned int testDataID)
 	else if (c > 64 && c < 91) {
 		output[c - 55] = 1.0; // Characters A-Z in indices 10-35
 	}
-	else if (c > 96 && c < 123) {
+	else if (c > 96 && c < 123) { // lower case to upper case
 		output[c - 87] = 1.0;
 	}
-	else if (c == '-') {
+	else if (c == '-') { // The dash
 		output[36];
 	}
 	return output;
