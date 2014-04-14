@@ -1,8 +1,7 @@
 #include "NeuralNetworkOCR.h"
 #include "CheckPatterns.h"
-#include "ImageList.h"
 
-NeuralNetworkOCR::NeuralNetworkOCR() : neural_network(NeuralNetwork("OCR.txt")), patterns(CheckPatterns()) {
+NeuralNetworkOCR::NeuralNetworkOCR() : neural_network(NeuralNetwork("Export/OCR.txt")), patterns(CheckPatterns()) {
 
 }
 
@@ -96,10 +95,16 @@ char NeuralNetworkOCR::outputToChar(const std::vector<double> output) {
 			highest = i;
 		}
 	}
-	if (highest < 10) {
+	if (highest < 10) { // Numbers
 		return highest + 48;
 	}
-	else {
+	else if (highest < 36) { // Alphabet characters
 		return highest + 55;
+	}
+	else if (highest == 36) { // Dash (-)
+		return highest + 9;
+	}
+	else {
+		return 32; // WhiteSpace by default
 	}
 }
