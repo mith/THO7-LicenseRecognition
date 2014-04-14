@@ -22,16 +22,17 @@ int main(int argc, const char* argv[])
 {
 	std::string img_dir(argc > 1 ? argv[1] : "Images3600");
 	TrainData td(img_dir);
-
 	for (unsigned int i = 0; i < 10; i++) {
-		TrainingsManager t(td);
+		TrainingsManager t(td, "./Export/NetExport1.txt");
+		t.setTargetSuccesRate(0.999);
 		t.run();
+		t.saveWeights(("./Export/NetExport" + (std::string)(i + ".txt")));
 		std::cout << "Last run had the following mistakes: " << std::endl;
 		auto mistakes = t.getRecentMistakes();
 		for (unsigned int t = 0; t < mistakes.size(); t++) {
+			char target = t < 10 ? '0' + t : 'A' + (t - 10);
 			for (unsigned int r = 0; r < mistakes.size(); r++) {
 				if (!(mistakes[t][r] == 0)) {
-					char target = t < 10 ? '0' + t : 'A' + (t - 10);
 					char result = r < 10 ? '0' + r : 'A' + (r - 10);
 					std::cout << target << " has been confused with " << result << " " << mistakes[t][r] << " times" << std::endl;
 				}

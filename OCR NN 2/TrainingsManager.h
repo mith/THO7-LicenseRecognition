@@ -61,6 +61,8 @@ public:
 	//When its true each session and its succesrate will be printed
 	//Along with 10 additional runs with debug data
 	void run(bool print = false);
+	//Method to save the current configuration of the neural net
+	void saveWeights(std::string fileName);
 	~TrainingsManager();
 };
 

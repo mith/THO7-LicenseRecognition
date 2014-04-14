@@ -1,5 +1,5 @@
 /* Created By Stefan Hulspas
-* Using some of the code from Simon Voordouw
+* Using some of the code from Simon Voordouw and Kevin Bosman
 * 04-13-2014 version 0.2
 * Cleaned up code
 * Added Comments

@@ -1,5 +1,5 @@
 /* Created By Stefan Hulspas
-* Using some of the code from Simon Voordouw
+* Using some of the code from Simon Voordouw and Kevin Bosman
 * 04-13-2014 version 0.2
 * Cleaned up code
 * Added Comments
@@ -63,6 +63,8 @@ public:
 	//Method to print data from the NN
 	//Because the trainer doesn't know what hes putting in the NN or whats supposed to come out
 	void print(unsigned int testDataID, std::vector<double> output, unsigned int highestR, std::vector<double> target, unsigned int highestT);
+	//Method to get the file name of the image with the testdataID
+	inline std::string getFileName(unsigned int testDataID){ return images[testDataID].filename; };
 	~TrainData();
 };
 

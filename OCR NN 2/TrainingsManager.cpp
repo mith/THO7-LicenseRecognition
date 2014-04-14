@@ -13,7 +13,7 @@ TrainingsManager::TrainingsManager(TrainData& td) : trainData(td), net(trainData
 {
 }
 
-TrainingsManager::TrainingsManager(TrainData& td, std::string import) : trainData(td), net(trainData.getTopology(), import), isTrained(true), passes(1000), targetSuccesRate(0.9), mistakes(trainData.getNumOutputs(), std::vector<unsigned int>(trainData.getNumOutputs(), 0))
+TrainingsManager::TrainingsManager(TrainData& td, std::string import) : trainData(td), net(trainData.getTopology(), import), isTrained(false), passes(1000), targetSuccesRate(0.9), mistakes(trainData.getNumOutputs(), std::vector<unsigned int>(trainData.getNumOutputs(), 0))
 {
 }
 
@@ -111,6 +111,10 @@ unsigned int TrainingsManager::applyInputToNN(std::vector<double> input) {
 		if (results[i] > results[highestR]) highestR = i;
 	}
 	return highestR;
+}
+
+void TrainingsManager::saveWeights(std::string fileName) {
+	net.exportNetwork(fileName);
 }
 
 TrainingsManager::~TrainingsManager()
