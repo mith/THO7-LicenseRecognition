@@ -18,7 +18,7 @@ NeuralNetwork::NeuralNetwork(const std::vector<unsigned int> topology)
 }
 // Author: Kevin Bosman
 // Co-author: Harmen Klink
-NeuralNetwork::NeuralNetwork(const std::vector<unsigned int> topo, const std::string &importFile) {
+NeuralNetwork::NeuralNetwork(const std::string &importFile) {
 	std::ifstream importDataFile;
 	importDataFile.open(importFile.c_str());
 	std::string line;
@@ -132,6 +132,7 @@ void NeuralNetwork::backPropagate(const std::vector<double> &target) {
 		NeuronLayer & previous_layer = layers[layer - 1];
 		for (unsigned int input_neuron = 0; input_neuron < previous_layer.num_nodes(); ++input_neuron) {
 			for (unsigned int current_neuron = 0; current_neuron < current_layer.num_nodes() - 1; ++current_neuron) {
+				// Adjust weights based on the gradient, the connection value and the training rate
 				previous_layer.weights[input_neuron][current_neuron] += TRAINING_RATE * previous_layer.output_values[input_neuron] * current_layer.gradients[current_neuron];
 			}
 		}
