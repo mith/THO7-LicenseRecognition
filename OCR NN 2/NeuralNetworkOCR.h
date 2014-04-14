@@ -16,7 +16,7 @@ private:
 
 public:
 	NeuralNetworkOCR();
-	~NeuralNetworkOCR();
+	~NeuralNetworkOCR(){};
 
 	std::string recognise(const std::vector<ImageGray> &images);
 };
